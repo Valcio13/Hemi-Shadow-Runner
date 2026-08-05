@@ -81,13 +81,31 @@ npm run preview
 
 ## 🔗 Web3 Integration
 
+### Score Submission Modes
+
+The game supports **two modes** for score submission:
+
+#### 1. Gasless Attestation (Default)
+- Sign a message with your score (no gas fees!)
+- No blockchain transaction required
+- Instant submission
+- Perfect for testing and casual play
+
+#### 2. On-Chain Leaderboard (Optional)
+- Submit scores to a smart contract on Hemi
+- Permanent, publicly verifiable leaderboard
+- Costs a small amount of ETH per submission (~$3-5)
+- Foundation for NFT rewards, tournaments, etc.
+
+See **[SMART_CONTRACT_GUIDE.md](SMART_CONTRACT_GUIDE.md)** for smart contract integration.
+
 ### Connecting Your Wallet
 
 After a game ends, you can:
 1. Click "Connect Wallet" on the game-over screen
 2. Connect MetaMask (or compatible wallet)
 3. The game will prompt you to switch to **Hemi Sepolia Testnet**
-4. Sign your score (gasless - no transaction fees!)
+4. Sign your score (gasless in attestation mode!)
 
 ### Network Configuration
 
@@ -98,13 +116,26 @@ After a game ends, you can:
 
 **Switching to Mainnet**: Change `DEFAULT_CHAIN` in `src/game/config/Web3Config.ts` to `HEMI_MAINNET`
 
-### Score Attestation
+### Smart Contract
 
-The game uses **gasless signature-based attestation**:
-- Your wallet signs a message containing your score, coins, timestamp, and address
-- No gas fees, no deployed contract required
-- The signature can be verified by anyone to prove your score
-- Message format is deterministic and includes the game name to prevent replay attacks
+The optional **ShadowRunnerLeaderboard** smart contract provides:
+- ✅ Global leaderboard (top 100 all-time)
+- ✅ Daily leaderboards
+- ✅ Player statistics tracking
+- ✅ Anti-cheat mechanisms
+- ✅ Admin controls
+
+**Deploy Your Own Contract**:
+```bash
+npm run compile
+npm run test:contract
+npm run deploy:testnet
+```
+
+See full documentation:
+- **[SMART_CONTRACT_GUIDE.md](SMART_CONTRACT_GUIDE.md)** - Integration guide
+- **[CONTRACT_DEPLOYMENT.md](CONTRACT_DEPLOYMENT.md)** - Deployment guide
+- **[contracts/README.md](contracts/README.md)** - Contract API docs
 
 ## 🏗️ Architecture
 
