@@ -146,6 +146,44 @@ body,
   font-weight: 800;
   color: var(--hemi);
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  transition: color 200ms ease, text-shadow 200ms ease;
+}
+
+.hud-coins-boosted {
+  color: var(--gold);
+  text-shadow: 0 0 16px rgba(255, 212, 71, 0.7), 0 2px 10px rgba(0, 0, 0, 0.5);
+  animation: coin-boost-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes coin-boost-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.hud-coin-multiplier {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: var(--gold);
+  background: rgba(255, 212, 71, 0.15);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 212, 71, 0.4);
+  text-shadow: 0 0 8px rgba(255, 212, 71, 0.6);
+  animation: multiplier-glow 1s ease-in-out infinite;
+}
+
+@keyframes multiplier-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 212, 71, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 212, 71, 0.7);
+  }
 }
 
 .hud-coin-dot {
@@ -154,6 +192,12 @@ body,
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #ffd0a3, var(--hemi) 70%);
   box-shadow: 0 0 10px rgba(255, 108, 21, 0.6);
+  transition: background 200ms ease, box-shadow 200ms ease;
+}
+
+.hud-coins-boosted .hud-coin-dot {
+  background: radial-gradient(circle at 35% 35%, #fff6d4, var(--gold) 70%);
+  box-shadow: 0 0 16px rgba(255, 212, 71, 0.9);
 }
 
 /* ---------------- Dash meter ---------------- */
@@ -225,7 +269,7 @@ body,
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 5px 11px;
+  padding: 6px 12px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 800;
@@ -236,13 +280,22 @@ body,
 }
 
 .pu-icon {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1;
 }
 
+.pu-label {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  opacity: 0.85;
+}
+
 .pu-timer {
+  font-size: 16px;
+  font-weight: 900;
   font-variant-numeric: tabular-nums;
-  opacity: 0.95;
+  margin-left: 4px;
+  text-shadow: 0 0 8px currentColor;
 }
 
 .pu-genesis {

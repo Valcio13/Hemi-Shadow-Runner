@@ -27,19 +27,19 @@ export const PLAYER = {
   // and it's self-limiting since each coin is consumed on contact.
   COIN_HOP_VELOCITY: -720,
   // Small grace window (ms) after leaving the ground where a jump still counts.
-  COYOTE_MS: 90,
+  COYOTE_MS: 150,  // Increased from 90 - more forgiving jump timing
   // Buffer a jump press slightly before landing so it fires on touchdown.
-  JUMP_BUFFER_MS: 110,
+  JUMP_BUFFER_MS: 180, // Increased from 110 - easier to queue jumps
   COLOR: 0x4de1ff,
   COLOR_DASH: 0xfff27a,
 } as const;
 
 export const SPEED = {
   // World scroll speed in px/sec. This is the heartbeat of difficulty scaling.
-  START: 360,
-  MAX: 820,
+  START: 340,      // Slightly slower start for easier entry
+  MAX: 800,        // High ceiling for experienced players
   // Added per second of survival.
-  RAMP_PER_SEC: 6.5,
+  RAMP_PER_SEC: 4, // Moderate difficulty ramp
 } as const;
 
 export const OBSTACLE = {
@@ -52,12 +52,12 @@ export const OBSTACLE = {
   ],
   // Spawn cadence expressed as a gap distance (px) between obstacles. Shrinks
   // with difficulty but is clamped so a running jump always clears the gap.
-  GAP_START: 520,
-  GAP_MIN: 300,
+  GAP_START: 650,  // Increased from 520 - more space between obstacles
+  GAP_MIN: 400,    // Increased from 300 - maintains larger minimum gap
   // Randomness added to each gap so the rhythm never feels metronomic.
-  GAP_JITTER: 120,
+  GAP_JITTER: 150, // Increased from 120 - more varied spacing
   // How much the base gap tightens per second of survival.
-  GAP_RAMP_PER_SEC: 3.2,
+  GAP_RAMP_PER_SEC: 2, // Reduced from 3.2 - gap closes more slowly
   COLOR_GLOW: 0xff2d4a,
 } as const;
 
@@ -128,7 +128,7 @@ export type PlaneId = (typeof PLANE)[keyof typeof PLANE];
 export const SHADOW = {
   // Instant plane toggle, gated by a short cooldown so it feels snappy but the
   // player can't mash through everything.
-  TOGGLE_COOLDOWN_MS: 220,
+  TOGGLE_COOLDOWN_MS: 150, // Reduced from 220 - faster phase toggling
   // Per-plane accent colors: player tint + barrier body + background wash.
   LIGHT_COLOR: 0x4de1ff,
   SHADOW_COLOR: 0xb46bff,
@@ -154,14 +154,14 @@ export const BARRIER = {
   // phase mechanic teeth: jump for ground obstacles, phase for barriers.
   HEIGHT: 320,
   // Distance-based cadence, sparser than obstacles so barriers read as events.
-  GAP_START: 1250,
-  GAP_MIN: 760,
-  GAP_JITTER: 480,
-  GAP_RAMP_PER_SEC: 6,
+  GAP_START: 1600,  // Increased from 1250 - barriers appear less frequently
+  GAP_MIN: 1000,    // Increased from 760 - maintains larger minimum spacing
+  GAP_JITTER: 500,  // Increased from 480 - more varied barrier placement
+  GAP_RAMP_PER_SEC: 4, // Reduced from 6 - barriers get denser more slowly
   // Slim hitbox so a phase timed a hair late still feels fair.
-  HITBOX_SCALE_X: 0.7,
+  HITBOX_SCALE_X: 0.6, // Reduced from 0.7 - even more forgiving hitbox
   // Min clearance (px) kept between a barrier's spawn column and any obstacle.
-  OBSTACLE_CLEARANCE: 90,
+  OBSTACLE_CLEARANCE: 120, // Increased from 90 - more breathing room
   // Small score reward for cleanly phasing past a barrier.
   PHASE_BONUS: 40,
 } as const;

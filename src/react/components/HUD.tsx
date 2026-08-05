@@ -46,29 +46,32 @@ export function HUD({
         <div className="hud-highscore">BEST {highScore.toLocaleString()}</div>
       </div>
       <div className="hud-top-right">
-        <div className="hud-coins">
+        <div className={`hud-coins ${genesisActive ? 'hud-coins-boosted' : ''}`}>
           <span className="hud-coin-dot" aria-hidden />
           {coins}
+          {genesisActive && <span className="hud-coin-multiplier">×2</span>}
         </div>
       </div>
 
       {/* Power-up indicators (M8) */}
       <div className="hud-powerups">
         {genesisActive && (
-          <div className="pu-badge pu-genesis">
-            <span className="pu-icon">2×</span>
-            <span className="pu-timer">{(genesisMs / 1000).toFixed(1)}s</span>
+          <div className="pu-badge pu-genesis" title="2× Score Multiplier">
+            <span className="pu-icon">⭐</span>
+            <span className="pu-label">2× SCORE</span>
+            <span className="pu-timer">{Math.ceil(genesisMs / 1000)}s</span>
           </div>
         )}
         {chronoActive && (
-          <div className="pu-badge pu-chrono">
-            <span className="pu-icon">⧗</span>
-            <span className="pu-timer">{(chronoMs / 1000).toFixed(1)}s</span>
+          <div className="pu-badge pu-chrono" title="Time Warp">
+            <span className="pu-icon">⏱️</span>
+            <span className="pu-label">SLOW-MO</span>
+            <span className="pu-timer">{Math.ceil(chronoMs / 1000)}s</span>
           </div>
         )}
         {hasRecovery && (
           <div className="pu-badge pu-recovery" title="Revive stored">
-            <span className="pu-icon">⬡</span>
+            <span className="pu-icon">💚</span>
             <span className="pu-label">REVIVE</span>
           </div>
         )}

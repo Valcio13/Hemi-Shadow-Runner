@@ -211,20 +211,21 @@ export class CoinManager {
   }
 
   /** Called by GameScene's overlap handler. Returns true if a coin was taken. */
-  collect(coin: Phaser.Physics.Arcade.Sprite): boolean {
+  collect(coin: Phaser.Physics.Arcade.Sprite, multiplier = 1): boolean {
     if (!coin.active) return false;
     this.sparkle.emitParticleAt(coin.x, coin.y, 8);
-    this.spawnFloatingScore(coin.x, coin.y);
+    this.spawnFloatingScore(coin.x, coin.y, multiplier);
     this.recycle(coin);
     return true;
   }
 
-  private spawnFloatingScore(x: number, y: number): void {
+  private spawnFloatingScore(x: number, y: number, multiplier: number): void {
+    const value = Math.round(COIN.SCORE_VALUE * multiplier);
     const label = this.scene.add
-      .text(x, y, `+${COIN.SCORE_VALUE}`, {
+      .text(x, y, `+${value}`, {
         fontFamily: 'Inter, sans-serif',
         fontSize: '20px',
-        color: '#ffa34d',
+        color: multiplier > 1 ? '#ffd447' : '#ffa34d',
         fontStyle: 'bold',
       })
       .setOrigin(0.5)

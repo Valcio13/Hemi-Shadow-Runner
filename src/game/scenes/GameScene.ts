@@ -352,7 +352,9 @@ export class GameScene extends Phaser.Scene {
   ) => {
     if (this.state !== 'running') return;
     const coin = coinObj as Phaser.Physics.Arcade.Sprite;
-    if (this.coins.collect(coin)) {
+    // Pass the current multiplier so the floating score shows the actual value
+    const multiplier = this.time.now < this.genesisUntil ? POWERUP.GENESIS.MULTIPLIER : 1;
+    if (this.coins.collect(coin, multiplier)) {
       this.scoring.collectCoin();
       this.dash.addCharge();
       this.audio.play('COIN');

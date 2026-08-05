@@ -10,9 +10,15 @@
     "lint": "oxlint src",
     "compile": "hardhat compile",
     "test:contract": "hardhat test",
+    "test:game": "hardhat test test/ShadowRunnerGame.test.ts",
+    "test:old": "hardhat test test/ShadowRunnerLeaderboard.test.ts",
+    "deploy:game:testnet": "hardhat run scripts/deploy-game.ts --network hemiSepolia",
+    "deploy:game:mainnet": "hardhat run scripts/deploy-game.ts --network hemi",
     "deploy:testnet": "hardhat run scripts/deploy.ts --network hemiSepolia",
     "deploy:mainnet": "hardhat run scripts/deploy.ts --network hemi",
+    "interact:game": "hardhat run scripts/interact-game.ts --network hemiSepolia",
     "interact": "hardhat run scripts/interact.ts --network hemiSepolia",
+    "index:leaderboard": "hardhat run scripts/index-leaderboard.ts --network hemiSepolia",
     "verify": "hardhat verify --network hemiSepolia"
   },
   "dependencies": {
