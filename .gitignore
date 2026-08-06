@@ -11,6 +11,9 @@ typechain-types
 coverage
 coverage.json
 
+# leaderboard cache
+leaderboard-cache.json
+
 # env files
 .env
 .env.local
