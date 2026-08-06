@@ -1,9 +1,15 @@
-import { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
-import "@nomicfoundation/hardhat-verify";
-import "dotenv/config";
+require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-verify");
+require("dotenv/config");
 
-const config: HardhatUserConfig = {
+// Register ts-node with Hardhat-specific tsconfig
+require("ts-node").register({
+  transpileOnly: true,
+  project: "./tsconfig.hardhat.json",
+});
+
+/** @type import('hardhat/config').HardhatUserConfig */
+module.exports = {
   solidity: {
     version: "0.8.20",
     settings: {
@@ -66,5 +72,3 @@ const config: HardhatUserConfig = {
     currency: "USD",
   },
 };
-
-export default config;

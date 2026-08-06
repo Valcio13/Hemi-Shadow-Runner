@@ -12,8 +12,8 @@
     "test:contract": "hardhat test",
     "test:game": "hardhat test test/ShadowRunnerGame.test.ts",
     "test:old": "hardhat test test/ShadowRunnerLeaderboard.test.ts",
-    "deploy:game:testnet": "hardhat run scripts/deploy-game.ts --network hemiSepolia",
-    "deploy:game:mainnet": "hardhat run scripts/deploy-game.ts --network hemi",
+    "deploy:game:testnet": "hardhat run scripts/deploy-game.cjs --network hemiSepolia",
+    "deploy:game:mainnet": "hardhat run scripts/deploy-game.cjs --network hemi",
     "deploy:testnet": "hardhat run scripts/deploy.ts --network hemiSepolia",
     "deploy:mainnet": "hardhat run scripts/deploy.ts --network hemi",
     "interact:game": "hardhat run scripts/interact-game.ts --network hemiSepolia",
@@ -46,6 +46,7 @@
     "hardhat-gas-reporter": "^1.0.9",
     "oxlint": "^1.14.0",
     "solidity-coverage": "^0.8.5",
+    "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
     "typescript": "^5.5.3",
     "vite": "^5.4.2"

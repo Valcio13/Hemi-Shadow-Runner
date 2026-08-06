@@ -45,13 +45,12 @@ export const DEFAULT_CHAIN: ChainParams = HEMI_SEPOLIA;
 export const WEB3 = {
   // 'attestation' = gasless personal_sign of the score. 'contract' = on-chain tx
   // (requires SCORE_CONTRACT below + an ABI). Attestation keeps the demo free.
-  SUBMISSION_MODE: 'attestation' as 'attestation' | 'contract',
+  SUBMISSION_MODE: 'contract' as 'attestation' | 'contract',
   // App tag embedded in the signed message so signatures can't be replayed
   // against another dapp.
   APP_TAG: 'Hemi Shadow Runner',
-  // Only used when SUBMISSION_MODE === 'contract'. Left empty until a leaderboard
-  // contract is deployed.
-  SCORE_CONTRACT: '' as string,
+  // Contract address for on-chain score submission
+  SCORE_CONTRACT: '0xD2c7C67721F155424A24c148D15bCeba36F5dfEe' as string,
 } as const;
 
 /**

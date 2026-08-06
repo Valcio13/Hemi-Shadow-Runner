@@ -8,6 +8,8 @@
  * keyboard focus until the run begins).
  */
 import { useEffect } from 'react';
+import { useWallet } from '../hooks/useWallet';
+import { DEFAULT_CHAIN } from '../../game/config/Web3Config';
 
 interface MainMenuProps {
   highScore: number;
@@ -23,7 +25,14 @@ const CONTROLS: ReadonlyArray<{ keys: string; action: string }> = [
   { keys: 'M', action: 'Mute' },
 ];
 
+function short(addr: string): string {
+  return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
+}
+
 export function MainMenu({ highScore, onPlay }: MainMenuProps) {
+  const wallet = useWallet();
+  const connected = !!wallet.address;
+
   // Space / Enter start the run. Bound on window because the Phaser canvas
   // has focus by default and InputSystem is disabled in attract mode.
   useEffect(() => {
@@ -36,6 +45,10 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onPlay]);
+
+  const handleConnect = () => {
+    void wallet.connect();
+  };
 
   return (
     <div className="overlay overlay-menu">
@@ -59,6 +72,34 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
           PLAY
         </button>
         <div className="menu-start-hint">or press SPACE</div>
+
+        {/* --- Wallet Connection --- */}
+        {wallet.available && (
+          <div className="menu-wallet">
+            {!connected ? (
+              <button 
+                className="btn btn-wallet btn-wallet-menu" 
+                onClick={handleConnect}
+                disabled={wallet.connecting}
+              >
+                {wallet.connecting ? 'Connecting…' : `Connect to ${DEFAULT_CHAIN.name}`}
+              </button>
+            ) : (
+              <div className="menu-wallet-connected">
+                <div className="web3-account">
+                  <span className="web3-dot" aria-hidden />
+                  {short(wallet.address!)}
+                  {!wallet.onHemi && <span className="web3-warn">wrong network</span>}
+                </div>
+                <div className="menu-wallet-hint">
+                  Your scores will be submitted on-chain
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {wallet.error && <p className="web3-error menu-wallet-error">{wallet.error}</p>}
 
         <div className="menu-controls">
           {CONTROLS.map((c) => (
