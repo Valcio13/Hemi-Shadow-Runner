@@ -199,7 +199,7 @@ export class GameScene extends Phaser.Scene {
     // Let React command the game (Play Again, Start).
     registerGameControls({
       restart: () => this.startRun(),
-      start: () => this.startRun(),
+      start: (gameSeed?: number) => this.startRun(gameSeed),
       mainMenu: () => this.showMenu(),
       dash: () => this.tryDash(),
       phase: () => this.tryPhase(),
@@ -259,7 +259,14 @@ export class GameScene extends Phaser.Scene {
     EventBus.emit(GameEvents.MENU_SHOWN);
   }
 
-  private startRun(): void {
+  private startRun(gameSeed?: number): void {
+    // Log the game seed for debugging (deterministic gameplay)
+    if (gameSeed !== undefined) {
+      console.log('🎲 Starting game with seed:', gameSeed);
+      // TODO: Initialize SeededRNG with gameSeed for deterministic gameplay
+      // This ensures the on-chain session can verify the score matches the seed
+    }
+    
     this.state = 'running';
     this.speed = SPEED.START;
     this.elapsed = 0;
@@ -545,16 +552,38 @@ export class GameScene extends Phaser.Scene {
     this.tweens.timeScale = DEATH.SLOWMO_SCALE;
 
     // Use the browser clock (setTimeout) so slow-mo doesn't stretch the wait.
-    window.setTimeout(() => {
+    window.setTimeout(async () => {
       this.time.timeScale = 1;
       this.physics.world.timeScale = 1;
       this.tweens.timeScale = 1;
       this.state = 'over';
+      
+      const finalScore = this.scoring.score;
+      const finalCoins = this.scoring.coinCount;
+      
       EventBus.emit(GameEvents.GAME_OVER, {
-        score: this.scoring.score,
-        coins: this.scoring.coinCount,
+        score: finalScore,
+        coins: finalCoins,
         elapsed: this.elapsed,
       });
+      
+      // Submit score to blockchain if we have an active session
+      const sessionId = (await import('../GameController')).getCurrentSessionId();
+      if (sessionId !== null) {
+        console.log('📤 Submitting score to blockchain...', {
+          sessionId: sessionId.toString(),
+          score: finalScore,
+        });
+        
+        const { web3 } = await import('../systems/Web3System');
+        const txHash = await web3.submitScoreOnChain(sessionId, finalScore);
+        
+        if (txHash) {
+          console.log('✅ Score submitted! Transaction:', txHash);
+        } else {
+          console.warn('⚠️ Failed to submit score on-chain');
+        }
+      }
     }, DEATH.SLOWMO_MS);
   }
 
