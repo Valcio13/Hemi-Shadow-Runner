@@ -1,22 +1,19 @@
 /**
  * Web3System — thin wrapper over the injected EIP-1193 provider (MetaMask etc).
  *
- * Deliberately dependency-free: connecting a wallet and doing a personal_sign
- * needs only the standard `window.ethereum` request interface, so we avoid
- * pulling ethers/viem (~hundreds of KB) into the bundle for a single sign call.
- * If M8 adds a real contract tx, that's the point to introduce viem locally.
+ * Now includes full contract integration for ShadowRunnerGame:
+ * - startGame() → get sessionId and gameSeed
+ * - submitScore() → submit final score on-chain
  *
- * Responsibilities:
- *  - Detect the injected provider, connect (eth_requestAccounts).
- *  - Ensure the wallet is on the Hemi chain (switch, add if unknown).
- *  - Produce a gasless score attestation via personal_sign.
- *  - Track account/chain changes and expose a subscribe() for React.
+ * Uses ethers.js BrowserProvider for contract calls.
  */
 import {
   DEFAULT_CHAIN,
   WEB3,
   buildScoreMessage,
 } from '../config/Web3Config';
+import { GAME_CONTRACT_ABI, type GameStartedEvent } from '../../contracts/game-types';
+import { BrowserProvider, Contract, type TransactionReceipt } from 'ethers';
 
 // Minimal shape of an EIP-1193 provider — only what we call.
 interface Eip1193Provider {
@@ -186,6 +183,99 @@ export class Web3System {
   }
 
   /**
+   * Start a new game session on-chain. Returns sessionId and gameSeed.
+   * This should be called when the player clicks PLAY (if wallet is connected).
+   */
+  async startGameSession(): Promise<{ sessionId: bigint; gameSeed: number } | null> {
+    if (!this.provider || !this.state.address) {
+      this.patch({ error: 'Connect a wallet first.' });
+      return null;
+    }
+    if (!this.state.onHemi) {
+      this.patch({ error: `Switch to ${DEFAULT_CHAIN.name} to play.` });
+      return null;
+    }
+    if (!WEB3.SCORE_CONTRACT) {
+      this.patch({ error: 'Contract not configured.' });
+      return null;
+    }
+
+    try {
+      const browserProvider = new BrowserProvider(this.provider as any);
+      const signer = await browserProvider.getSigner();
+      const contract = new Contract(WEB3.SCORE_CONTRACT, GAME_CONTRACT_ABI, signer);
+
+      // Call startGame() on the contract
+      const tx = await contract.startGame();
+      const receipt: TransactionReceipt = await tx.wait();
+
+      // Parse the GameStarted event to get sessionId and gameSeed
+      if (receipt && receipt.logs) {
+        for (const log of receipt.logs) {
+          try {
+            const parsed = contract.interface.parseLog({
+              topics: [...log.topics],
+              data: log.data,
+            });
+            if (parsed && parsed.name === 'GameStarted') {
+              const sessionId = parsed.args.sessionId as bigint;
+              const gameSeed = Number(parsed.args.gameSeed);
+              
+              this.patch({ error: null });
+              return { sessionId, gameSeed };
+            }
+          } catch {
+            // Not our event, continue
+          }
+        }
+      }
+
+      this.patch({ error: 'Failed to parse game start event.' });
+      return null;
+    } catch (err) {
+      this.patch({ error: this.describe(err) });
+      return null;
+    }
+  }
+
+  /**
+   * Submit final score to the contract. Returns transaction hash on success.
+   */
+  async submitScoreOnChain(sessionId: bigint, score: number): Promise<string | null> {
+    if (!this.provider || !this.state.address) {
+      this.patch({ error: 'Connect a wallet first.' });
+      return null;
+    }
+    if (!this.state.onHemi) {
+      this.patch({ error: `Switch to ${DEFAULT_CHAIN.name} to submit.` });
+      return null;
+    }
+    if (!WEB3.SCORE_CONTRACT) {
+      this.patch({ error: 'Contract not configured.' });
+      return null;
+    }
+
+    // Cap score at uint16 max (65535)
+    const cappedScore = Math.min(Math.floor(score), 65535);
+
+    try {
+      const browserProvider = new BrowserProvider(this.provider as any);
+      const signer = await browserProvider.getSigner();
+      const contract = new Contract(WEB3.SCORE_CONTRACT, GAME_CONTRACT_ABI, signer);
+
+      // Call submitScore() on the contract
+      const tx = await contract.submitScore(sessionId, cappedScore);
+      const receipt = await tx.wait();
+
+      this.patch({ error: null });
+      return receipt?.hash || null;
+    } catch (err) {
+      this.patch({ error: this.describe(err) });
+      return null;
+    }
+  }
+
+  /**
    * Produce a signed score attestation (gasless). Returns null on failure/reject.
    * When WEB3.SUBMISSION_MODE === 'contract' this is where an eth_sendTransaction
    * to WEB3.SCORE_CONTRACT would go instead — kept as a single seam.
@@ -203,9 +293,9 @@ export class Web3System {
     const address = this.state.address;
     const timestamp = Date.now();
 
+    // NOTE: submitScore is now legacy - use submitScoreOnChain for contract mode
     if (WEB3.SUBMISSION_MODE === 'contract' && WEB3.SCORE_CONTRACT) {
-      // Placeholder for a real leaderboard tx. Not enabled in the demo.
-      this.patch({ error: 'On-chain contract submission not yet deployed.' });
+      this.patch({ error: 'Use contract submission instead.' });
       return null;
     }
 
