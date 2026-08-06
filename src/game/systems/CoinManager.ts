@@ -7,9 +7,12 @@
  *
  * Collection produces a sparkle burst and a floating "+N" score popup for the
  * "game feel" checklist. Overlap detection is owned by GameScene.
+ * 
+ * Uses SeededRNG for deterministic spawning when playing on-chain games.
  */
 import Phaser from 'phaser';
 import { COIN, VIEW, WORLD } from '../config/GameConfig';
+import type { SeededRNG } from './SeededRNG';
 
 export class CoinManager {
   private scene: Phaser.Scene;
@@ -22,9 +25,13 @@ export class CoinManager {
   private distanceSinceLast = 0;
   private nextGap: number = COIN.GAP_START;
   private active = false;
+  
+  // RNG reference from GameScene
+  private getRNG: () => SeededRNG;
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, getRNG: () => SeededRNG) {
     this.scene = scene;
+    this.getRNG = getRNG;
     this.group = scene.physics.add.group({ allowGravity: false });
 
     this.sparkle = scene.add.particles(0, 0, 'sparkle', {
@@ -56,7 +63,8 @@ export class CoinManager {
   }
 
   private rollNextGap(): void {
-    this.nextGap = COIN.GAP_START + Phaser.Math.Between(0, COIN.GAP_JITTER);
+    const rng = this.getRNG();
+    this.nextGap = COIN.GAP_START + rng.nextInt(0, COIN.GAP_JITTER + 1);
   }
 
   update(distance: number): void {
@@ -131,13 +139,14 @@ export class CoinManager {
   }
 
   private spawnCluster(): void {
-    const count = Phaser.Math.Between(COIN.CLUSTER_MIN, COIN.CLUSTER_MAX);
+    const rng = this.getRNG();
+    const count = rng.nextInt(COIN.CLUSTER_MIN, COIN.CLUSTER_MAX + 1);
     const groundTop = VIEW.HEIGHT - WORLD.GROUND_HEIGHT;
     const startX = VIEW.WIDTH + COIN.RADIUS * 2;
 
     // Randomly pick a flat row or a jump-arc for this cluster.
-    const isArc = Math.random() < 0.5;
-    const baseY = Phaser.Math.Between(COIN.LOW_Y, COIN.HIGH_Y);
+    const isArc = rng.nextFloat() < 0.5;
+    const baseY = rng.nextInt(COIN.LOW_Y, COIN.HIGH_Y + 1);
 
     for (let i = 0; i < count; i++) {
       const x = startX + i * COIN.SPACING;

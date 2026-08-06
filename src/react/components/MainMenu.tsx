@@ -7,9 +7,10 @@
  * InputSystem, because InputSystem is disabled during the menu — the menu owns
  * keyboard focus until the run begins).
  */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useWallet } from '../hooks/useWallet';
 import { DEFAULT_CHAIN } from '../../game/config/Web3Config';
+import { Leaderboard } from './Leaderboard';
 
 interface MainMenuProps {
   highScore: number;
@@ -32,6 +33,7 @@ function short(addr: string): string {
 export function MainMenu({ highScore, onPlay }: MainMenuProps) {
   const wallet = useWallet();
   const connected = !!wallet.address;
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   // Space / Enter start the run. Bound on window because the Phaser canvas
   // has focus by default and InputSystem is disabled in attract mode.
@@ -49,6 +51,10 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
   const handleConnect = () => {
     void wallet.connect();
   };
+
+  if (showLeaderboard) {
+    return <Leaderboard onClose={() => setShowLeaderboard(false)} />;
+  }
 
   return (
     <div className="overlay overlay-menu">
@@ -72,6 +78,10 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
           PLAY
         </button>
         <div className="menu-start-hint">or press SPACE</div>
+
+        <button className="btn btn-ghost btn-leaderboard" onClick={() => setShowLeaderboard(true)}>
+          🏆 View Leaderboard
+        </button>
 
         {/* --- Wallet Connection --- */}
         {wallet.available && (

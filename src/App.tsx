@@ -2,6 +2,7 @@ import { GameCanvas } from './react/components/GameCanvas';
 import { HUD } from './react/components/HUD';
 import { MainMenu } from './react/components/MainMenu';
 import { GameOverScreen } from './react/components/GameOverScreen';
+import { TransactionStatus } from './react/components/TransactionStatus';
 import { useGameState } from './react/hooks/useGameState';
 import {
   requestMainMenu,
@@ -29,6 +30,7 @@ export default function App() {
     <div className="app-shell">
       <div className="game-frame">
         <GameCanvas />
+        <TransactionStatus />
         <HUD
           phase={phase}
           score={score}

@@ -29,6 +29,11 @@ export const GameEvents = {
   MENU_SHOWN: 'game:menu-shown',
   REQUEST_START: 'ui:request-start',
   REQUEST_RESTART: 'ui:request-restart',
+  // Transaction status events for UI feedback
+  TX_STARTED: 'tx:started',        // Transaction sent, waiting for user approval
+  TX_PENDING: 'tx:pending',        // User approved, waiting for confirmation
+  TX_SUCCESS: 'tx:success',        // Transaction confirmed
+  TX_ERROR: 'tx:error',            // Transaction failed
 } as const;
 
 export type GameEventName = (typeof GameEvents)[keyof typeof GameEvents];

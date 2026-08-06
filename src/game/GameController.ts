@@ -6,9 +6,10 @@
  * into React, we register a small command handler here. GameScene registers its
  * handlers on create; React calls the exported functions.
  * 
- * Now includes Web3 integration for on-chain game sessions.
+ * Now includes Web3 integration for on-chain game sessions with transaction status feedback.
  */
 import { web3 } from './systems/Web3System';
+import { EventBus, GameEvents } from './EventBus';
 
 type Handlers = {
   restart: () => void;
@@ -53,6 +54,9 @@ export async function requestStart(): Promise<void> {
   
   if (walletState.address && walletState.onHemi) {
     try {
+      // Emit TX_STARTED when user needs to approve in wallet
+      EventBus.emit(GameEvents.TX_STARTED, { type: 'startGame', message: 'Approve in wallet...' });
+      
       // Call the contract to start a game session
       const result = await web3.startGameSession();
       
@@ -63,16 +67,31 @@ export async function requestStart(): Promise<void> {
           gameSeed: result.gameSeed,
         });
         
+        // Emit success
+        EventBus.emit(GameEvents.TX_SUCCESS, { 
+          type: 'startGame', 
+          message: 'Session created!',
+          sessionId: result.sessionId.toString(),
+        });
+        
         // Start the game with the on-chain seed
         handlers.start?.(result.gameSeed);
       } else {
         // Failed to start session, but still allow offline play
         console.warn('⚠️ Failed to start on-chain session, playing offline');
+        EventBus.emit(GameEvents.TX_ERROR, { 
+          type: 'startGame', 
+          message: 'Failed to create session. Playing offline.',
+        });
         currentSessionId = null;
         handlers.start?.();
       }
     } catch (error) {
       console.error('❌ Error starting game session:', error);
+      EventBus.emit(GameEvents.TX_ERROR, { 
+        type: 'startGame', 
+        message: 'Transaction failed. Playing offline.',
+      });
       // Allow offline play even if on-chain fails
       currentSessionId = null;
       handlers.start?.();

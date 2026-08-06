@@ -14,6 +14,7 @@ import {
 } from '../config/Web3Config';
 import { GAME_CONTRACT_ABI, type GameStartedEvent } from '../../contracts/game-types';
 import { BrowserProvider, Contract, type TransactionReceipt } from 'ethers';
+import { EventBus, GameEvents } from '../EventBus';
 
 // Minimal shape of an EIP-1193 provider — only what we call.
 interface Eip1193Provider {
@@ -215,6 +216,14 @@ export class Web3System {
       console.log('🎮 Calling startGame()...');
       const tx = await contract.startGame();
       console.log('⏳ Transaction sent:', tx.hash);
+      
+      // Emit pending status
+      EventBus.emit(GameEvents.TX_PENDING, { 
+        type: 'startGame', 
+        message: 'Confirming transaction...',
+        txHash: tx.hash,
+      });
+      
       console.log('⏳ Waiting for confirmation...');
       
       const receipt: TransactionReceipt = await tx.wait();
@@ -278,6 +287,14 @@ export class Web3System {
 
       // Call submitScore() on the contract
       const tx = await contract.submitScore(sessionId, cappedScore);
+      
+      // Emit pending status
+      EventBus.emit(GameEvents.TX_PENDING, { 
+        type: 'submitScore', 
+        message: 'Confirming transaction...',
+        txHash: tx.hash,
+      });
+      
       const receipt = await tx.wait();
 
       this.patch({ error: null });

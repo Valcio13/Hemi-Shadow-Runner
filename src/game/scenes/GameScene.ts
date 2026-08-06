@@ -29,6 +29,7 @@ import { AudioSystem } from '../systems/AudioSystem';
 import { ScoreManager } from '../systems/ScoreManager';
 import { DashSystem } from '../systems/DashSystem';
 import { PowerUpManager, type PowerUpKind } from '../systems/PowerUpManager';
+import { SeededRNG } from '../systems/SeededRNG';
 import { EventBus, GameEvents } from '../EventBus';
 import { registerGameControls, unregisterGameControls } from '../GameController';
 
@@ -62,9 +63,15 @@ export class GameScene extends Phaser.Scene {
   private hasRecovery = false; // Recovery Protocol stored (max one)
   private invulnUntil = 0; // post-revive invulnerability until this time
   private chronoTint?: Phaser.GameObjects.Rectangle; // blue screen tint overlay
+  
+  // Seeded RNG for deterministic gameplay
+  private rng!: SeededRNG;
+  private currentSeed: number = 0;
 
   constructor() {
     super('GameScene');
+    // Initialize RNG with a temporary seed (will be reset on startRun)
+    this.rng = new SeededRNG(Date.now() >>> 0);
   }
 
   create(): void {
@@ -95,7 +102,7 @@ export class GameScene extends Phaser.Scene {
     this.scoring = new ScoreManager();
 
     // --- Obstacles + collision
-    this.obstacles = new ObstacleManager(this);
+    this.obstacles = new ObstacleManager(this, () => this.rng);
     this.physics.add.overlap(
       this.player.sprite,
       this.obstacles.group,
@@ -105,7 +112,7 @@ export class GameScene extends Phaser.Scene {
     );
 
     // --- Coins + collection
-    this.coins = new CoinManager(this);
+    this.coins = new CoinManager(this, () => this.rng);
     // Give coins awareness of obstacles so they never spawn on top of a hazard.
     this.coins.setObstacleGroup(this.obstacles.group);
     this.physics.add.overlap(
@@ -119,7 +126,7 @@ export class GameScene extends Phaser.Scene {
     // --- Shadow planes (the phase mechanic) + plane-locked barriers
     this.shadow = new ShadowSystem(this, this.player);
     this.audio = new AudioSystem();
-    this.barriers = new BarrierManager(this);
+    this.barriers = new BarrierManager(this, () => this.rng);
     // Barriers avoid spawning on top of ground obstacles.
     this.barriers.setObstacleGroup(this.obstacles.group);
     this.physics.add.overlap(
@@ -146,7 +153,7 @@ export class GameScene extends Phaser.Scene {
 
     // --- Power-ups (M8): pooled rare collectibles. Effect state lives here so
     // score/time/revival stay single-sourced. Gate spawns on effect state.
-    this.powerups = new PowerUpManager(this);
+    this.powerups = new PowerUpManager(this, () => this.rng);
     this.powerups.setObstacleGroups(this.obstacles.group, this.barriers.group);
     this.powerups.setSpawnGate((kind) => this.canSpawnPowerUp(kind));
     this.physics.add.overlap(
@@ -260,12 +267,18 @@ export class GameScene extends Phaser.Scene {
   }
 
   private startRun(gameSeed?: number): void {
-    // Log the game seed for debugging (deterministic gameplay)
+    // Initialize or re-initialize the RNG with the provided seed
     if (gameSeed !== undefined) {
-      console.log('🎲 Starting game with seed:', gameSeed);
-      // TODO: Initialize SeededRNG with gameSeed for deterministic gameplay
-      // This ensures the on-chain session can verify the score matches the seed
+      this.currentSeed = gameSeed;
+      console.log('🎲 Starting game with on-chain seed:', gameSeed);
+    } else {
+      // Offline mode: use timestamp as seed for variety
+      this.currentSeed = Date.now() >>> 0;
+      console.log('🎲 Starting offline game with timestamp seed:', this.currentSeed);
     }
+    
+    // Create new SeededRNG instance
+    this.rng = new SeededRNG(this.currentSeed);
     
     this.state = 'running';
     this.speed = SPEED.START;
@@ -341,7 +354,7 @@ export class GameScene extends Phaser.Scene {
     this.tweens.add({
       targets: obs,
       y: obs.y - 120,
-      angle: Phaser.Math.Between(-180, 180),
+      angle: this.rng.nextInt(-180, 180),
       alpha: 0,
       duration: 300,
       ease: 'Cubic.out',
@@ -575,13 +588,27 @@ export class GameScene extends Phaser.Scene {
           score: finalScore,
         });
         
+        EventBus.emit(GameEvents.TX_STARTED, { 
+          type: 'submitScore', 
+          message: 'Approve score submission...',
+        });
+        
         const { web3 } = await import('../systems/Web3System');
         const txHash = await web3.submitScoreOnChain(sessionId, finalScore);
         
         if (txHash) {
           console.log('✅ Score submitted! Transaction:', txHash);
+          EventBus.emit(GameEvents.TX_SUCCESS, { 
+            type: 'submitScore', 
+            message: 'Score recorded on-chain!',
+            txHash,
+          });
         } else {
           console.warn('⚠️ Failed to submit score on-chain');
+          EventBus.emit(GameEvents.TX_ERROR, { 
+            type: 'submitScore', 
+            message: 'Failed to submit score.',
+          });
         }
       }
     }, DEATH.SLOWMO_MS);
@@ -695,6 +722,11 @@ export class GameScene extends Phaser.Scene {
 
   getScoring(): ScoreManager {
     return this.scoring;
+  }
+  
+  /** Get the seeded RNG for deterministic randomness */
+  getRNG(): SeededRNG {
+    return this.rng;
   }
 
   /** Force-spawn a power-up kind for verification/debug (bypasses spawn timers). */

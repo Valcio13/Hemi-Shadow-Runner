@@ -10,9 +10,11 @@
  *   and reused instead of destroyed, so there's zero per-spawn GC churn.
  * - Gaps are clamped to a minimum that a running jump can always clear, so the
  *   game never generates an impossible sequence.
+ * - Uses SeededRNG for deterministic spawning when playing on-chain games.
  */
 import Phaser from 'phaser';
 import { OBSTACLE, VIEW, WORLD } from '../config/GameConfig';
+import type { SeededRNG } from './SeededRNG';
 
 export class ObstacleManager {
   private scene: Phaser.Scene;
@@ -21,9 +23,17 @@ export class ObstacleManager {
   private distanceSinceLast = 0;
   private nextGap: number = OBSTACLE.GAP_START;
   private active = false;
+  
+  // RNG reference from GameScene
+  private getRNG: () => SeededRNG;
 
-  constructor(scene: Phaser.Scene) {
+  private distanceSinceLast = 0;
+  private nextGap: number = OBSTACLE.GAP_START;
+  private active = false;
+
+  constructor(scene: Phaser.Scene, getRNG: () => SeededRNG) {
     this.scene = scene;
+    this.getRNG = getRNG;
     this.group = scene.physics.add.group({
       allowGravity: false,
       immovable: true,
@@ -51,7 +61,8 @@ export class ObstacleManager {
 
   private rollNextGap(elapsed: number): void {
     const base = this.currentBaseGap(elapsed);
-    this.nextGap = base + Phaser.Math.Between(0, OBSTACLE.GAP_JITTER);
+    const rng = this.getRNG();
+    this.nextGap = base + rng.nextInt(0, OBSTACLE.GAP_JITTER + 1);
   }
 
   /**
@@ -80,9 +91,8 @@ export class ObstacleManager {
   }
 
   private spawnOne(): void {
-    const type = Phaser.Utils.Array.GetRandom(
-      OBSTACLE.TYPES as unknown as (typeof OBSTACLE.TYPES)[number][]
-    );
+    const rng = this.getRNG();
+    const type = OBSTACLE.TYPES[rng.nextInt(0, OBSTACLE.TYPES.length)];
     const groundTop = VIEW.HEIGHT - WORLD.GROUND_HEIGHT;
     const x = VIEW.WIDTH + type.width;
     const y = groundTop; // origin bottom-center → sits on ground

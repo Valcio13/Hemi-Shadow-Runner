@@ -15,9 +15,12 @@
  * Collection + effect application live in GameScene (single source of truth for
  * score/time/state), exactly like coin collection. This manager only handles
  * spawning, motion, pooling, and the idle bob/rotate visuals.
+ * 
+ * Uses SeededRNG for deterministic spawning when playing on-chain games.
  */
 import Phaser from 'phaser';
 import { POWERUP, VIEW, WORLD } from '../config/GameConfig';
+import type { SeededRNG } from './SeededRNG';
 
 export type PowerUpKind = 'genesis' | 'chrono' | 'recovery';
 
@@ -43,9 +46,13 @@ export class PowerUpManager {
   // Gate callback: GameScene decides if a kind may spawn right now (not active
   // / not already stored). Keeps effect-state ownership in one place.
   private canSpawn: (kind: PowerUpKind) => boolean = () => true;
+  
+  // RNG reference from GameScene
+  private getRNG: () => SeededRNG;
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, getRNG: () => SeededRNG) {
     this.scene = scene;
+    this.getRNG = getRNG;
     this.group = scene.physics.add.group({ allowGravity: false });
   }
 
@@ -98,7 +105,8 @@ export class PowerUpManager {
   }
 
   private rollNext(t: KindTimer, now: number): void {
-    t.nextAt = now + Phaser.Math.Between(t.spawnMin, t.spawnMax);
+    const rng = this.getRNG();
+    t.nextAt = now + rng.nextInt(t.spawnMin, t.spawnMax + 1);
   }
 
   /**
@@ -157,7 +165,8 @@ export class PowerUpManager {
     };
     if (blocked(this.obstacleGroup) || blocked(this.barrierGroup)) return null;
     const groundTop = VIEW.HEIGHT - WORLD.GROUND_HEIGHT;
-    const offset = Phaser.Math.Between(POWERUP.MIN_Y, POWERUP.MAX_Y);
+    const rng = this.getRNG();
+    const offset = rng.nextInt(POWERUP.MIN_Y, POWERUP.MAX_Y + 1);
     return groundTop - offset;
   }
 

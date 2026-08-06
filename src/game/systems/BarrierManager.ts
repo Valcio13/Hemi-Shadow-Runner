@@ -9,9 +9,12 @@
  *
  * Same engine as ObstacleManager: distance-based spawning + object pooling.
  * Each pooled sprite carries its plane on `getData('plane')`.
+ * 
+ * Uses SeededRNG for deterministic spawning when playing on-chain games.
  */
 import Phaser from 'phaser';
 import { BARRIER, PLANE, SHADOW, VIEW, WORLD, type PlaneId } from '../config/GameConfig';
+import type { SeededRNG } from './SeededRNG';
 
 export class BarrierManager {
   private scene: Phaser.Scene;
@@ -23,9 +26,13 @@ export class BarrierManager {
   private distanceSinceLast = 0;
   private nextGap: number = BARRIER.GAP_START;
   private active = false;
+  
+  // RNG reference from GameScene
+  private getRNG: () => SeededRNG;
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, getRNG: () => SeededRNG) {
     this.scene = scene;
+    this.getRNG = getRNG;
     this.group = scene.physics.add.group({
       allowGravity: false,
       immovable: true,
@@ -57,7 +64,8 @@ export class BarrierManager {
 
   private rollNextGap(elapsed: number): void {
     const base = this.currentBaseGap(elapsed);
-    this.nextGap = base + Phaser.Math.Between(0, BARRIER.GAP_JITTER);
+    const rng = this.getRNG();
+    this.nextGap = base + rng.nextInt(0, BARRIER.GAP_JITTER + 1);
   }
 
   /**
@@ -109,7 +117,8 @@ export class BarrierManager {
 
   private spawnOne(): void {
     // Alternate-ish planes with jitter so it isn't a predictable metronome.
-    const plane: PlaneId = Math.random() < 0.5 ? PLANE.LIGHT : PLANE.SHADOW;
+    const rng = this.getRNG();
+    const plane: PlaneId = rng.nextFloat() < 0.5 ? PLANE.LIGHT : PLANE.SHADOW;
     const key = plane === PLANE.LIGHT ? 'barrier-light' : 'barrier-shadow';
     const groundTop = VIEW.HEIGHT - WORLD.GROUND_HEIGHT;
     const x = VIEW.WIDTH + BARRIER.WIDTH;
