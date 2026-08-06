@@ -201,13 +201,24 @@ export class Web3System {
     }
 
     try {
+      console.log('🔗 Creating browser provider...');
       const browserProvider = new BrowserProvider(this.provider as any);
+      
+      console.log('📝 Getting signer...');
       const signer = await browserProvider.getSigner();
+      console.log('✅ Signer address:', await signer.getAddress());
+      
+      console.log('📜 Creating contract instance...');
       const contract = new Contract(WEB3.SCORE_CONTRACT, GAME_CONTRACT_ABI, signer);
+      console.log('✅ Contract created at:', WEB3.SCORE_CONTRACT);
 
-      // Call startGame() on the contract
+      console.log('🎮 Calling startGame()...');
       const tx = await contract.startGame();
+      console.log('⏳ Transaction sent:', tx.hash);
+      console.log('⏳ Waiting for confirmation...');
+      
       const receipt: TransactionReceipt = await tx.wait();
+      console.log('✅ Transaction confirmed!', receipt.hash);
 
       // Parse the GameStarted event to get sessionId and gameSeed
       if (receipt && receipt.logs) {
@@ -221,6 +232,7 @@ export class Web3System {
               const sessionId = parsed.args.sessionId as bigint;
               const gameSeed = Number(parsed.args.gameSeed);
               
+              console.log('🎲 Game started!', { sessionId: sessionId.toString(), gameSeed });
               this.patch({ error: null });
               return { sessionId, gameSeed };
             }
@@ -233,6 +245,7 @@ export class Web3System {
       this.patch({ error: 'Failed to parse game start event.' });
       return null;
     } catch (err) {
+      console.error('❌ Error starting game session:', err);
       this.patch({ error: this.describe(err) });
       return null;
     }
