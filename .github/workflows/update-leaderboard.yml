@@ -1,10 +1,17 @@
 name: Update Leaderboard
 
+# DISABLED: Leaderboard now fetches directly from blockchain in real-time
+# This workflow is kept for reference but not actively used
+# To re-enable: uncomment the 'on' section below
+
+# on:
+#   schedule:
+#     # Run every 10 minutes
+#     - cron: '*/10 * * * *'
+#   workflow_dispatch: # Allow manual trigger
+
 on:
-  schedule:
-    # Run every 10 minutes
-    - cron: '*/10 * * * *'
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch: # Manual trigger only (disabled by default)
 
 permissions:
   contents: write # Allow workflow to commit and push changes

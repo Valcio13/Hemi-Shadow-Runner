@@ -10,6 +10,7 @@ A fast-paced endless runner game with full blockchain integration, built on the 
 - ✅ **Player Statistics** - Track your performance, view achievements, and see your rank
 - ✅ **Social Sharing** - Share your scores on Twitter/X and challenge friends
 - ✅ **Challenge Mode** - Accept challenges and compete directly with friends
+- ✅ **Real-Time Leaderboard** - Direct blockchain queries with 30s refresh
 - ✅ **Cumulative Leaderboard** - All your scores count toward your total ranking
 - ✅ **On-Chain Verification** - Every score is recorded on Hemi blockchain
 - ✅ **Deterministic Gameplay** - Seeded RNG ensures fair competition
@@ -30,7 +31,7 @@ A fast-paced endless runner game with full blockchain integration, built on the 
 ### Blockchain Integration
 - **On-Chain Scoring**: Every game recorded on Hemi blockchain
 - **Smart Contract**: Minimal, gas-optimized game session management
-- **Global Leaderboard**: Cumulative scoring system with top 100 rankings
+- **Global Leaderboard**: Real-time cumulative scoring with top 100 rankings
 - **Player Stats**: Track games played, best score, total score, and rank
 - **Transaction Status**: Real-time feedback during blockchain interactions
 - **Deterministic RNG**: On-chain seeds ensure verifiable gameplay
@@ -152,11 +153,24 @@ Access your stats from the main menu:
 
 ### Leaderboard System
 
+**Real-Time Updates**: The leaderboard fetches data directly from the blockchain every 30 seconds
+
 **Cumulative Scoring**: Your total score = sum of all games played
 
 The leaderboard displays:
 - Rank (with emoji indicators: 🥇🥈🥉🏅⭐)
 - Player address (links to Hemi Explorer)
+- **Total Score**: Sum of all games played
+- **Best Score**: Highest single-game score
+- Games played count
+- Last played timestamp
+
+**Features**:
+- ✅ Real-time updates (30-second refresh)
+- ✅ Manual refresh button for instant updates
+- ✅ Browser caching for fast loading
+- ✅ Top 100 players shown
+- ✅ No server required - fully decentralized
 - Total cumulative score
 - Best single-game score
 - Total games played
@@ -379,12 +393,15 @@ requestToggleMute();   // Mute/unmute audio
    ↓
 6. Call submitScore(sessionId, score) (Web3System)
    ↓
-7. Update leaderboard via event indexing (fetch-leaderboard.cjs)
+7. Leaderboard auto-refreshes from blockchain (useLeaderboard hook)
 ```
 
-**Event Indexing**:
+**Real-Time Leaderboard**:
 ```
-GameFinished events → fetch-leaderboard.cjs → leaderboard.json → React components
+GameFinished events → Client queries blockchain → useLeaderboard hook → React components
+- Auto-refresh every 30 seconds
+- Browser localStorage caching
+- Manual refresh button available
 ```
 
 ## 🎨 Design Decisions
@@ -463,10 +480,10 @@ npm run verify               # Verify contract on explorer
 npm run interact:game        # Interact with deployed contract
 ```
 
-**Leaderboard**:
+**Leaderboard** (Optional - for backend caching):
 ```bash
-npm run leaderboard:fetch    # Fetch leaderboard from blockchain
-npm run leaderboard:watch    # Auto-update on file changes
+npm run leaderboard:fetch    # Manually fetch leaderboard (not needed for real-time mode)
+npm run leaderboard:watch    # Auto-update on file changes (legacy)
 ```
 
 ### Environment Variables
@@ -621,40 +638,24 @@ npm install -g netlify-cli
 netlify deploy --prod --dir=dist
 ```
 
-### Leaderboard Indexer Service
+### Real-Time Leaderboard
 
-Set up automatic leaderboard updates:
+The leaderboard now fetches data directly from the blockchain in real-time. No backend service or scheduled job is required!
 
-**Option 1: Cron Job (Linux/Mac)**:
-```bash
-# Edit crontab
-crontab -e
+**How it works**:
+1. The `useLeaderboard` hook queries blockchain events directly
+2. Data is cached in browser localStorage for fast loading
+3. Auto-refreshes every 30 seconds
+4. Manual refresh button available for instant updates
 
-# Add line to run every 5 minutes
-*/5 * * * * cd /path/to/project && npm run leaderboard:fetch
-```
+**Advantages**:
+- ✅ Zero server maintenance
+- ✅ Fully decentralized
+- ✅ Real-time updates (no delays)
+- ✅ No deployment required
 
-**Option 2: GitHub Actions**:
-```yaml
-# .github/workflows/update-leaderboard.yml
-name: Update Leaderboard
-on:
-  schedule:
-    - cron: '*/5 * * * *'  # Every 5 minutes
-jobs:
-  update:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: npm install
-      - run: npm run leaderboard:fetch
-      - run: git add public/leaderboard.json
-      - run: git commit -m "Update leaderboard" || exit 0
-      - run: git push
-```
-
-**Option 3: Serverless Function**:
-Deploy `scripts/fetch-leaderboard.cjs` as a serverless function on Vercel/Netlify with scheduled execution.
+**Legacy Option: GitHub Actions** (disabled by default):
+If you prefer server-side caching, the `fetch-leaderboard.cjs` script and GitHub Actions workflow are still available but disabled. To re-enable, uncomment the schedule in `.github/workflows/update-leaderboard.yml`.
 
 ### Contract Deployment
 
