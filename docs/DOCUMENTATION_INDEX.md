@@ -7,6 +7,7 @@ Complete documentation guide for Hemi Shadow Runner.
 ### Getting Started
 - **[README.md](../README.md)** - Main project documentation with quick start guide
 - **[QUICKSTART.md](QUICKSTART.md)** - Step-by-step setup and first game guide
+- **[MAINNET_QUICK_START.md](MAINNET_QUICK_START.md)** - Mainnet deployment quick start
 
 ### Architecture & Design
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture and technical design
@@ -17,17 +18,28 @@ Complete documentation guide for Hemi Shadow Runner.
 - **[SEEDED_RNG_INTEGRATION.md](SEEDED_RNG_INTEGRATION.md)** - Deterministic RNG system
 - **[PLAYER_STATS_FEATURE.md](PLAYER_STATS_FEATURE.md)** - Player statistics system
 - **[SOCIAL_FEATURES.md](SOCIAL_FEATURES.md)** - Sharing and challenge mode
+- **[REAL_TIME_LEADERBOARD.md](REAL_TIME_LEADERBOARD.md)** - Real-time blockchain leaderboard
 - **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Implementation notes
 
 ### Smart Contracts
 - **[SMART_CONTRACT_GUIDE.md](SMART_CONTRACT_GUIDE.md)** - Contract integration guide
 - **[SMART_CONTRACT_SUMMARY.md](SMART_CONTRACT_SUMMARY.md)** - Contract overview
-- **[CONTRACT_DEPLOYMENT.md](CONTRACT_DEPLOYMENT.md)** - Deployment instructions
+- **[CONTRACT_DEPLOYMENT.md](CONTRACT_DEPLOYMENT.md)** - Testnet deployment instructions
+- **[MAINNET_DEPLOYMENT.md](MAINNET_DEPLOYMENT.md)** - Mainnet deployment guide
 - **[NEW_CONTRACT_README.md](NEW_CONTRACT_README.md)** - New contract documentation
 
 ### Deployment & Operations
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Production deployment guide
-- **Leaderboard Indexer** - Event indexing setup (`scripts/fetch-leaderboard.cjs`)
+- **[MAINNET_DEPLOYMENT.md](MAINNET_DEPLOYMENT.md)** - Mainnet deployment checklist
+- **[REAL_TIME_LEADERBOARD.md](REAL_TIME_LEADERBOARD.md)** - Real-time leaderboard setup
+
+### Testing
+- **[SOCIAL_FEATURES_TESTING.md](SOCIAL_FEATURES_TESTING.md)** - Social features test guide
+
+### Project History
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history and release notes
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[archive/](archive/)** - Archived documentation
 
 ### Project History
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and release notes
@@ -47,13 +59,16 @@ Start with **[README.md](../README.md)** to learn about the game and how to play
 
 ### For Blockchain Integration
 1. **[SMART_CONTRACT_GUIDE.md](SMART_CONTRACT_GUIDE.md)** - Understand contract integration
-2. **[CONTRACT_DEPLOYMENT.md](CONTRACT_DEPLOYMENT.md)** - Deploy your own contract
-3. **[SEEDED_RNG_INTEGRATION.md](SEEDED_RNG_INTEGRATION.md)** - Learn about deterministic gameplay
+2. **[MAINNET_DEPLOYMENT.md](MAINNET_DEPLOYMENT.md)** - Deploy to mainnet
+3. **[CONTRACT_DEPLOYMENT.md](CONTRACT_DEPLOYMENT.md)** - Deploy to testnet
+4. **[SEEDED_RNG_INTEGRATION.md](SEEDED_RNG_INTEGRATION.md)** - Learn about deterministic gameplay
+5. **[REAL_TIME_LEADERBOARD.md](REAL_TIME_LEADERBOARD.md)** - Set up real-time leaderboard
 
 ### For Feature Understanding
 - **Game Mechanics** → See main README.md
 - **Statistics System** → [PLAYER_STATS_FEATURE.md](PLAYER_STATS_FEATURE.md)
 - **Social Features** → [SOCIAL_FEATURES.md](SOCIAL_FEATURES.md)
+- **Leaderboard System** → [REAL_TIME_LEADERBOARD.md](REAL_TIME_LEADERBOARD.md)
 - **RNG System** → [SEEDED_RNG_INTEGRATION.md](SEEDED_RNG_INTEGRATION.md)
 
 ---
@@ -103,4 +118,4 @@ If documentation is unclear or missing:
 
 ---
 
-*Last Updated: December 2024*
+*Last Updated: August 2026 - Mainnet Launch*

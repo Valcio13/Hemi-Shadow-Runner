@@ -2,16 +2,17 @@
 
 A fast-paced endless runner game with full blockchain integration, built on the Hemi network. Master the art of jumping, dashing, and **phasing between shadow planes** while competing on a global leaderboard!
 
-![Hemi Shadow Runner](https://img.shields.io/badge/Phaser-3.80-blue) ![React](https://img.shields.io/badge/React-18.3-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue) ![Hemi](https://img.shields.io/badge/Hemi-Sepolia-orange) ![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)
+![Hemi Shadow Runner](https://img.shields.io/badge/Phaser-3.80-blue) ![React](https://img.shields.io/badge/React-18.3-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue) ![Hemi](https://img.shields.io/badge/Hemi-Mainnet-green) ![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)
 
 ## ✨ What's New
 
 **🎉 Latest Features**:
+- ✅ **Mainnet Launch** - Now live on Hemi Mainnet with real ETH
+- ✅ **Real-Time Leaderboard** - Direct blockchain queries, updates every 30s
 - ✅ **Player Statistics** - Track your performance, view achievements, and see your rank
 - ✅ **Social Sharing** - Share your scores on Twitter/X and challenge friends
 - ✅ **Challenge Mode** - Accept challenges and compete directly with friends
-- ✅ **Real-Time Leaderboard** - Direct blockchain queries with 30s refresh
-- ✅ **Cumulative Leaderboard** - All your scores count toward your total ranking
+- ✅ **Cumulative Scoring** - All your scores count toward your total ranking
 - ✅ **On-Chain Verification** - Every score is recorded on Hemi blockchain
 - ✅ **Deterministic Gameplay** - Seeded RNG ensures fair competition
 
@@ -50,7 +51,7 @@ A fast-paced endless runner game with full blockchain integration, built on the 
 - Node.js 18+ 
 - npm or yarn
 - MetaMask or Web3 wallet (for blockchain features)
-- Hemi Sepolia testnet ETH ([Get from faucet](https://testnet.explorer.hemi.xyz/faucet))
+- Hemi Mainnet ETH ([Bridge from Ethereum](https://app.hemi.xyz/en/bridge) or [Get testnet ETH](https://testnet.explorer.hemi.xyz/faucet))
 
 ### Installation
 

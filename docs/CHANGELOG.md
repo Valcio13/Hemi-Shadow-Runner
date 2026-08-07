@@ -5,7 +5,45 @@ All notable changes to Hemi Shadow Runner will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - Current Development
+## [1.1.0] - 2026-08-07 - Mainnet Launch
+
+### Added
+
+**Mainnet Deployment**
+- Deployed ShadowRunnerGame contract to Hemi Mainnet
+- Contract address: `0xD2c7C67721F155424A24c148D15bCeba36F5dfEe`
+- Mainnet configuration and deployment scripts
+- Contract verification on Hemi Explorer
+- Comprehensive mainnet deployment documentation
+
+**Real-Time Leaderboard**
+- Direct blockchain queries (no server required)
+- Browser localStorage caching for fast loading
+- Auto-refresh every 30 seconds
+- Manual refresh button for instant updates
+- Fully decentralized architecture
+- `useLeaderboard` hook for real-time data fetching
+
+**Improved Developer Tools**
+- `get-deployment-block.cjs` - Find contract deployment block
+- `check-player-stats.cjs` - Verify on-chain player data
+- Fixed `DEPLOYMENT_BLOCK` for mainnet (5020400)
+- Updated all explorer links to mainnet
+
+### Changed
+- Switched from Hemi Sepolia to Hemi Mainnet
+- Disabled GitHub Actions leaderboard workflow (now optional)
+- Updated Web3Config to use HEMI_MAINNET by default
+- Leaderboard fetch interval reduced to 30 seconds
+- All documentation updated for mainnet
+
+### Fixed
+- Leaderboard not showing played games (wrong deployment block)
+- Explorer links pointing to testnet
+- Player stats not updating in real-time
+- Leaderboard cache initialization
+
+## [1.0.0] - 2024-12 - Initial Release
 
 ### Added
 
@@ -40,12 +78,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Links to Hemi Explorer for each transaction
 - Event-driven updates (TX_STARTED, TX_PENDING, TX_SUCCESS, TX_ERROR)
 
-**Cumulative Leaderboard**
+**Cumulative Leaderboard** (Legacy)
 - Total score tracking across all games (not just best)
 - Event indexer script (`fetch-leaderboard.cjs`)
 - Top 100 rankings with cumulative and best scores
-- Auto-refresh every 30 seconds
-- Player search and rank display
 - npm scripts: `leaderboard:fetch` and `leaderboard:watch`
 
 **Deterministic RNG System**
