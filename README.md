@@ -1,4 +1,5 @@
 # 🎮 Hemi Shadow Runner
+# 🎮 Hemi Shadow Runner
 
 A fast-paced endless runner game with full blockchain integration, built on the Hemi network. Master the art of jumping, dashing, and **phasing between shadow planes** while competing on a global leaderboard!
 
@@ -51,7 +52,7 @@ A fast-paced endless runner game with full blockchain integration, built on the 
 - Node.js 18+ 
 - npm or yarn
 - MetaMask or Web3 wallet (for blockchain features)
-- Hemi Mainnet ETH ([Bridge from Ethereum](https://app.hemi.xyz/en/bridge) or [Get testnet ETH](https://testnet.explorer.hemi.xyz/faucet))
+- Hemi Mainnet ETH ([Bridge from Ethereum](https://app.hemi.xyz/en/bridge))
 
 ### Installation
 
@@ -131,7 +132,7 @@ Every game is a verifiable on-chain session:
 3. **Submit Score** → Score recorded permanently on blockchain
 4. **View Stats** → Track all your games, best scores, and rankings
 
-**Contract Address**: `0xD2c7C67721F155424A24c148D15bCeba36F5dfEe` (Hemi Sepolia)
+**Contract Address**: `0xD2c7C67721F155424A24c148D15bCeba36F5dfEe` (Hemi Mainnet)
 
 ### Player Statistics
 
@@ -205,31 +206,28 @@ Auto-refreshes every 30 seconds while viewing.
 Think you can beat my score? 👀
 
 🔗 Challenge link: https://yoursite.com?challenge=1234
-✅ Verified on-chain: https://testnet.explorer.hemi.xyz/tx/0x...
+✅ Verified on-chain: https://explorer.hemi.xyz/tx/0x...
 ```
 
 ### Connecting Your Wallet
 
 1. Click "Play" on the main menu
 2. Connect MetaMask (or compatible wallet)
-3. Game prompts you to switch to **Hemi Sepolia Testnet**
+3. Game prompts you to switch to **Hemi Mainnet**
 4. Approve the game start transaction
 5. Your scores are automatically submitted on-chain
 
-**Need Testnet ETH?** Get it from the [Hemi Sepolia Faucet](https://testnet.explorer.hemi.xyz/faucet)
+**Need Mainnet ETH?** [Bridge from Ethereum](https://app.hemi.xyz/en/bridge) or use testnet for practice: [Hemi Sepolia Faucet](https://testnet.explorer.hemi.xyz/faucet)
 
 ### Network Configuration
 
-**Current Network**: Hemi Sepolia (Testnet)
-- Chain ID: `743111` (`0xb56c7`)
-- RPC: `https://testnet.rpc.hemi.network/rpc`
-- Explorer: `https://testnet.explorer.hemi.xyz`
+**Current Network**: Hemi Mainnet
+- Chain ID: `43111` (`0xA867`)
+- RPC: `https://rpc.hemi.network/rpc`
+- Explorer: `https://explorer.hemi.xyz`
 - Contract: `0xD2c7C67721F155424A24c148D15bCeba36F5dfEe`
 
-**Switching to Mainnet**: 
-1. Deploy contract to Hemi mainnet
-2. Update `DEFAULT_CHAIN` in `src/game/config/Web3Config.ts` to `HEMI_MAINNET`
-3. Update `SCORE_CONTRACT` address
+**For Testing**: Testnet deployment available (see [docs/CONTRACT_DEPLOYMENT.md](docs/CONTRACT_DEPLOYMENT.md))
 
 ### Smart Contract
 
@@ -257,7 +255,7 @@ function getPlayerStats(address player) external view returns (PlayerStats memor
 ```bash
 npm run compile              # Compile contracts
 npm run test:contract        # Run contract tests
-npm run deploy:game:testnet  # Deploy to Hemi Sepolia
+npm run deploy:game:testnet  # Deploy to Hemi Sepolia (for testing)
 npm run verify              # Verify on block explorer
 ```
 
@@ -269,7 +267,7 @@ npm run verify              # Verify on block explorer
 - **Game Engine**: Phaser 3.80
 - **Smart Contracts**: Solidity 0.8.20
 - **Build Tool**: Vite 5
-- **Blockchain**: Hemi Network (Sepolia testnet)
+- **Blockchain**: Hemi Network (Mainnet)
 - **Web3**: ethers.js v6
 - **Linting**: Oxlint
 - **Testing**: Hardhat + Chai
@@ -475,8 +473,8 @@ npm run lint         # Run Oxlint
 npm run compile              # Compile Solidity contracts
 npm run test:contract        # Run contract tests
 npm run test:game            # Test specific contract
-npm run deploy:game:testnet  # Deploy to Hemi Sepolia
-npm run deploy:game:mainnet  # Deploy to Hemi mainnet
+npm run deploy:game:testnet  # Deploy to Hemi Sepolia (for testing)
+npm run deploy:game:mainnet  # Deploy to Hemi mainnet (production)
 npm run verify               # Verify contract on explorer
 npm run interact:game        # Interact with deployed contract
 ```
@@ -494,7 +492,7 @@ Create `.env` file for contract deployment:
 # Required for deployment
 PRIVATE_KEY=your_private_key_here
 
-# Optional: Custom RPC endpoints
+# Optional: Custom RPC endpoints (for development/testing)
 HEMI_SEPOLIA_RPC=https://testnet.rpc.hemi.network/rpc
 HEMI_MAINNET_RPC=https://rpc.hemi.network/rpc
 ```
@@ -660,7 +658,12 @@ If you prefer server-side caching, the `fetch-leaderboard.cjs` script and GitHub
 
 ### Contract Deployment
 
-**Deploy to Hemi Sepolia**:
+**Deploy to Hemi Mainnet** (Production):
+```bash
+npm run deploy:game:mainnet
+```
+
+**Deploy to Testnet** (For testing):
 ```bash
 npm run deploy:game:testnet
 ```
@@ -673,7 +676,7 @@ npm run deploy:game:mainnet
 
 **Verify on Explorer**:
 ```bash
-npm run verify -- --network hemiSepolia <CONTRACT_ADDRESS>
+npm run verify -- --network hemi <CONTRACT_ADDRESS>
 ```
 
 **Update Frontend Config**:
@@ -727,7 +730,7 @@ Built with:
 - **Issues**: [GitHub Issues](https://github.com/your-repo/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/your-repo/discussions)
 - **Hemi Docs**: [Hemi Network Documentation](https://docs.hemi.xyz/)
-- **Contract**: [`0xD2c7C67721F155424A24c148D15bCeba36F5dfEe`](https://testnet.explorer.hemi.xyz/address/0xD2c7C67721F155424A24c148D15bCeba36F5dfEe)
+- **Contract**: [`0xD2c7C67721F155424A24c148D15bCeba36F5dfEe`](https://explorer.hemi.xyz/address/0xD2c7C67721F155424A24c148D15bCeba36F5dfEe)
 
 ---
 
