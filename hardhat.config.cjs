@@ -6,6 +6,9 @@ require("dotenv/config");
 require("ts-node").register({
   transpileOnly: true,
   project: "./tsconfig.hardhat.json",
+  compilerOptions: {
+    module: "commonjs",
+  },
 });
 
 /** @type import('hardhat/config').HardhatUserConfig */

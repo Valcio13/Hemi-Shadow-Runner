@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "lint": "oxlint src",
     "compile": "hardhat compile",
+    "test": "hardhat test",
     "test:contract": "hardhat test",
     "test:game": "hardhat test test/ShadowRunnerGame.test.ts",
     "test:old": "hardhat test test/ShadowRunnerLeaderboard.test.ts",
@@ -52,6 +53,7 @@
     "oxlint": "^1.14.0",
     "solidity-coverage": "^0.8.5",
     "ts-node": "^10.9.2",
+    "tsx": "^4.23.11",
     "typechain": "^8.3.2",
     "typescript": "^5.5.3",
     "vite": "^6.0.0"
