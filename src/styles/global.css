@@ -1439,6 +1439,11 @@ body,
   color: #ffffff;
 }
 
+.btn-download {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: #ffffff;
+}
+
 .share-challenge-info {
   background: rgba(255, 108, 21, 0.08);
   border: 1px solid rgba(255, 108, 21, 0.2);

@@ -9,6 +9,7 @@
  */
 import { useState } from 'react';
 import { DEFAULT_CHAIN } from '../../game/config/Web3Config';
+import { generateChallengeImage, downloadChallengeImage } from '../../utils/generateChallengeImage';
 
 interface ShareScoreProps {
   score: number;
@@ -101,6 +102,19 @@ export function ShareScore({ score, coins, sessionId, txHash, onClose }: ShareSc
     }
   };
 
+  const handleDownloadImage = () => {
+    try {
+      const imageDataUrl = generateChallengeImage({
+        score,
+        challengerAddress: playerAddress,
+        coins,
+      });
+      downloadChallengeImage(imageDataUrl, `shadow-runner-challenge-${score}.png`);
+    } catch (err) {
+      console.error('Failed to generate image:', err);
+    }
+  };
+
   return (
     <div className="overlay">
       <div className="panel panel-share">
@@ -156,6 +170,11 @@ export function ShareScore({ score, coins, sessionId, txHash, onClose }: ShareSc
           <button className="btn btn-share btn-challenge" onClick={handleChallengeLink}>
             <span className="share-icon">{copied && shareMethod !== 'copy' ? '✓' : '⚔️'}</span>
             <span>{copied && shareMethod !== 'copy' ? 'Copied!' : 'Copy Challenge Link'}</span>
+          </button>
+
+          <button className="btn btn-share btn-download" onClick={handleDownloadImage}>
+            <span className="share-icon">📸</span>
+            <span>Download Challenge Image</span>
           </button>
         </div>
 
