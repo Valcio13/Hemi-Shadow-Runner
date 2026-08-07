@@ -46,7 +46,7 @@ async function main() {
   console.log(`⛓️  Current block: ${currentBlock}`);
   
   // Determine starting block (use deployment block if cache is empty)
-  const DEPLOYMENT_BLOCK = 6493000; // Approximate deployment block
+  const DEPLOYMENT_BLOCK = 5020400; // Mainnet deployment block
   const fromBlock = cachedData.lastBlock === 0 ? DEPLOYMENT_BLOCK : cachedData.lastBlock + 1;
   
   if (fromBlock <= currentBlock) {

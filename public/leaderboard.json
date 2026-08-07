@@ -1,5 +1,15 @@
 {
-  "lastUpdated": 1786112088241,
-  "lastBlock": 0,
-  "entries": []
+  "lastUpdated": 1786113471326,
+  "lastBlock": 5020563,
+  "entries": [
+    {
+      "rank": 1,
+      "player": "0x8cc769177F7991dcB3C36AF1F7D64F1E9259b418",
+      "score": 2636,
+      "bestScore": 2526,
+      "gamesPlayed": 2,
+      "lastPlayed": 1786113227,
+      "bestSessionId": "1"
+    }
+  ]
 }
