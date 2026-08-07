@@ -6,6 +6,9 @@ on:
     - cron: '*/10 * * * *'
   workflow_dispatch: # Allow manual trigger
 
+permissions:
+  contents: write # Allow workflow to commit and push changes
+
 jobs:
   update-leaderboard:
     runs-on: ubuntu-latest
