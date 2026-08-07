@@ -1,5 +1,4 @@
 # 🎮 Hemi Shadow Runner
-# 🎮 Hemi Shadow Runner
 
 A fast-paced endless runner game with full blockchain integration, built on the Hemi network. Master the art of jumping, dashing, and **phasing between shadow planes** while competing on a global leaderboard!
 
