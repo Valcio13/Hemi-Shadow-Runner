@@ -4,6 +4,13 @@ A fast-paced endless runner game with full blockchain integration, built on the 
 
 ![Hemi Shadow Runner](https://img.shields.io/badge/Phaser-3.80-blue) ![React](https://img.shields.io/badge/React-18.3-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue) ![Hemi](https://img.shields.io/badge/Hemi-Mainnet-green) ![Solidity](https://img.shields.io/badge/Solidity-0.8.20-blue)
 
+<!-- 
+TODO: Add gameplay GIF here
+![Gameplay Demo](.github/media/gameplay.gif)
+-->
+
+> 🎮 **[Play Now](https://hemi-shadow-runner.pages.dev)** | 📜 **[View Contract](https://explorer.hemi.xyz/address/0xD2c7C67721F155424A24c148D15bCeba36F5dfEe)** | 📚 **[Documentation](docs/DOCUMENTATION_INDEX.md)**
+
 ## ✨ What's New
 
 **🎉 Latest Features**:
@@ -15,6 +22,28 @@ A fast-paced endless runner game with full blockchain integration, built on the 
 - ✅ **Cumulative Scoring** - All your scores count toward your total ranking
 - ✅ **On-Chain Verification** - Every score is recorded on Hemi blockchain
 - ✅ **Deterministic Gameplay** - Seeded RNG ensures fair competition
+
+## 📸 Screenshots
+
+<!-- 
+TODO: Add screenshots here
+<details>
+<summary>🎮 Gameplay & Features</summary>
+
+### Dual-Plane Mechanics
+![Phase Shift Gameplay](.github/media/phase-shift.gif)
+
+### Leaderboard
+![Global Leaderboard](.github/media/leaderboard.png)
+
+### Player Statistics
+![Player Stats Panel](.github/media/player-stats.png)
+
+### Challenge Mode
+![Challenge Mode](.github/media/challenge-mode.png)
+
+</details>
+-->
 
 ## 🌟 Features
 
