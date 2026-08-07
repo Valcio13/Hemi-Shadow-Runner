@@ -9,9 +9,11 @@
  */
 import { useEffect, useState } from 'react';
 import { useWallet } from '../hooks/useWallet';
+import { useChallenge } from '../hooks/useChallenge';
 import { DEFAULT_CHAIN } from '../../game/config/Web3Config';
 import { Leaderboard } from './Leaderboard';
 import { PlayerStats } from './PlayerStats';
+import { ChallengeAccept } from './ChallengeAccept';
 
 interface MainMenuProps {
   highScore: number;
@@ -33,9 +35,11 @@ function short(addr: string): string {
 
 export function MainMenu({ highScore, onPlay }: MainMenuProps) {
   const wallet = useWallet();
+  const { challenge, clearChallenge } = useChallenge();
   const connected = !!wallet.address;
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showStats, setShowStats] = useState(false);
+  const [showChallengeAccept, setShowChallengeAccept] = useState(challenge.active);
 
   // Space / Enter start the run. Bound on window because the Phaser canvas
   // has focus by default and InputSystem is disabled in attract mode.
@@ -53,6 +57,28 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
   const handleConnect = () => {
     void wallet.connect();
   };
+
+  const handleChallengeAccept = () => {
+    setShowChallengeAccept(false);
+    onPlay(); // Start game immediately
+  };
+
+  const handleChallengeDecline = () => {
+    setShowChallengeAccept(false);
+    clearChallenge(); // Clear URL parameter
+  };
+
+  // Show challenge accept modal if challenge is active
+  if (showChallengeAccept && challenge.active) {
+    return (
+      <ChallengeAccept
+        targetScore={challenge.targetScore}
+        challengerAddress={challenge.challengerAddress}
+        onAccept={handleChallengeAccept}
+        onDecline={handleChallengeDecline}
+      />
+    );
+  }
 
   if (showLeaderboard) {
     return <Leaderboard onClose={() => setShowLeaderboard(false)} />;

@@ -6,9 +6,14 @@
 interface ChallengeBannerProps {
   targetScore: number;
   currentScore: number;
+  challengerAddress?: string;
 }
 
-export function ChallengeBanner({ targetScore, currentScore }: ChallengeBannerProps) {
+function shortenAddress(addr: string): string {
+  return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+}
+
+export function ChallengeBanner({ targetScore, currentScore, challengerAddress }: ChallengeBannerProps) {
   const remaining = Math.max(0, targetScore - currentScore);
   const progress = Math.min(100, (currentScore / targetScore) * 100);
   const isPassing = currentScore > targetScore;
@@ -17,7 +22,11 @@ export function ChallengeBanner({ targetScore, currentScore }: ChallengeBannerPr
     <div className={`challenge-banner ${isPassing ? 'challenge-passing' : ''}`}>
       <div className="challenge-header">
         <span className="challenge-icon">⚔️</span>
-        <span className="challenge-label">CHALLENGE MODE</span>
+        <span className="challenge-label">
+          {challengerAddress 
+            ? `VS ${shortenAddress(challengerAddress)}` 
+            : 'CHALLENGE MODE'}
+        </span>
       </div>
       
       <div className="challenge-scores">

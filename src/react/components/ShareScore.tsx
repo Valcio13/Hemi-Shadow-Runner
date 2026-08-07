@@ -22,17 +22,37 @@ function generateShareText(score: number, coins: number): string {
   return `🎮 I just scored ${score.toLocaleString()} points in Shadow Runner on @hemi_xyz!\n\n🪙 Collected ${coins} coins\n⚡ Phase-shifting through light and shadow\n\nThink you can beat my score? 👀`;
 }
 
-function generateChallengeUrl(score: number): string {
+function generateChallengeUrl(score: number, playerAddress?: string): string {
   const baseUrl = window.location.origin;
-  return `${baseUrl}?challenge=${score}`;
+  const params = new URLSearchParams({
+    challenge: score.toString(),
+  });
+  
+  // Add challenger address if available
+  if (playerAddress) {
+    params.set('from', playerAddress);
+  }
+  
+  return `${baseUrl}?${params.toString()}`;
 }
 
 export function ShareScore({ score, coins, sessionId, txHash, onClose }: ShareScoreProps) {
   const [copied, setCopied] = useState(false);
   const [shareMethod, setShareMethod] = useState<'twitter' | 'copy' | null>(null);
 
+  // Get player address from wallet (you'll need to import useWallet)
+  const getPlayerAddress = (): string | undefined => {
+    // Try to get from window.ethereum if available
+    if (typeof window !== 'undefined' && (window as any).ethereum) {
+      const accounts = (window as any).ethereum.selectedAddress;
+      return accounts;
+    }
+    return undefined;
+  };
+
+  const playerAddress = getPlayerAddress();
   const shareText = generateShareText(score, coins);
-  const challengeUrl = generateChallengeUrl(score);
+  const challengeUrl = generateChallengeUrl(score, playerAddress);
   const explorerUrl = txHash 
     ? `${DEFAULT_CHAIN.blockExplorerUrls[0]}/tx/${txHash}`
     : null;

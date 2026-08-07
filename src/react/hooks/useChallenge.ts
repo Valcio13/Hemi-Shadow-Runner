@@ -11,6 +11,7 @@ export interface ChallengeState {
   targetScore: number;
   beaten: boolean;
   difference: number;
+  challengerAddress?: string;
 }
 
 export function useChallenge() {
@@ -25,6 +26,7 @@ export function useChallenge() {
     // Check URL for challenge parameter
     const params = new URLSearchParams(window.location.search);
     const challengeScore = params.get('challenge');
+    const challengerAddress = params.get('from');
     
     if (challengeScore) {
       const targetScore = parseInt(challengeScore, 10);
@@ -35,10 +37,10 @@ export function useChallenge() {
           targetScore,
           beaten: false,
           difference: 0,
+          challengerAddress: challengerAddress || undefined,
         });
         
-        // Clean URL (optional - keeps challenge in URL for sharing)
-        // window.history.replaceState({}, '', window.location.pathname);
+        // Keep challenge in URL for sharing
       }
     }
   }, []);

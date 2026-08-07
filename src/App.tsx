@@ -58,7 +58,11 @@ export default function App() {
         />
         {/* Challenge Banner - show during gameplay */}
         {phase === 'playing' && challenge.active && (
-          <ChallengeBanner targetScore={challenge.targetScore} currentScore={score} />
+          <ChallengeBanner 
+            targetScore={challenge.targetScore} 
+            currentScore={score} 
+            challengerAddress={challenge.challengerAddress}
+          />
         )}
         <button
           className="mute-btn"
