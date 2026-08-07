@@ -29,7 +29,7 @@ jobs:
         run: npm ci
       
       - name: Fetch leaderboard from blockchain
-        run: npm run leaderboard:fetch
+        run: npm run leaderboard:fetch:mainnet
       
       - name: Check for changes
         id: git-check

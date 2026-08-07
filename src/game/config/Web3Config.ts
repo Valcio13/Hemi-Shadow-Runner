@@ -40,7 +40,7 @@ export const HEMI_SEPOLIA: ChainParams = {
 };
 
 /** Which network the game targets. Flip to HEMI_MAINNET for production. */
-export const DEFAULT_CHAIN: ChainParams = HEMI_SEPOLIA;
+export const DEFAULT_CHAIN: ChainParams = HEMI_MAINNET;
 
 export const WEB3 = {
   // 'attestation' = gasless personal_sign of the score. 'contract' = on-chain tx

@@ -23,7 +23,7 @@ const CACHE_FILE = path.join(__dirname, '..', 'leaderboard-cache.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'public', 'leaderboard.json');
 
 async function main() {
-  console.log('🔍 Fetching leaderboard data from Hemi Sepolia...');
+  console.log('🔍 Fetching leaderboard data from Hemi Mainnet...');
   console.log('📜 Contract:', CONTRACT_ADDRESS);
   
   // Get contract instance
