@@ -27,10 +27,6 @@ export class ObstacleManager {
   // RNG reference from GameScene
   private getRNG: () => SeededRNG;
 
-  private distanceSinceLast = 0;
-  private nextGap: number = OBSTACLE.GAP_START;
-  private active = false;
-
   constructor(scene: Phaser.Scene, getRNG: () => SeededRNG) {
     this.scene = scene;
     this.getRNG = getRNG;

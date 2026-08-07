@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { useWallet } from '../hooks/useWallet';
 import { DEFAULT_CHAIN } from '../../game/config/Web3Config';
 import { Leaderboard } from './Leaderboard';
+import { PlayerStats } from './PlayerStats';
 
 interface MainMenuProps {
   highScore: number;
@@ -34,6 +35,7 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
   const wallet = useWallet();
   const connected = !!wallet.address;
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showStats, setShowStats] = useState(false);
 
   // Space / Enter start the run. Bound on window because the Phaser canvas
   // has focus by default and InputSystem is disabled in attract mode.
@@ -54,6 +56,10 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
 
   if (showLeaderboard) {
     return <Leaderboard onClose={() => setShowLeaderboard(false)} />;
+  }
+
+  if (showStats) {
+    return <PlayerStats onClose={() => setShowStats(false)} />;
   }
 
   return (
@@ -79,9 +85,17 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
         </button>
         <div className="menu-start-hint">or press SPACE</div>
 
-        <button className="btn btn-ghost btn-leaderboard" onClick={() => setShowLeaderboard(true)}>
-          🏆 View Leaderboard
-        </button>
+        <div className="menu-buttons">
+          <button className="btn btn-ghost btn-leaderboard" onClick={() => setShowLeaderboard(true)}>
+            🏆 View Leaderboard
+          </button>
+          
+          {connected && wallet.onHemi && (
+            <button className="btn btn-ghost btn-stats" onClick={() => setShowStats(true)}>
+              📊 Your Stats
+            </button>
+          )}
+        </div>
 
         {/* --- Wallet Connection --- */}
         {wallet.available && (

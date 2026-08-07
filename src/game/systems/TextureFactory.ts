@@ -375,28 +375,29 @@ function makeObstacle(
   g.destroy();
 }
 
-function makeRoundedRect(
-  scene: Phaser.Scene,
-  key: string,
-  w: number,
-  h: number,
-  color: number,
-  radius: number
-): void {
-  if (scene.textures.exists(key)) return;
-  const g = scene.make.graphics({ x: 0, y: 0 }, false);
-  // Soft outer glow band
-  g.fillStyle(color, 0.25);
-  g.fillRoundedRect(0, 0, w, h, radius + 3);
-  // Body
-  g.fillStyle(color, 1);
-  g.fillRoundedRect(2, 2, w - 4, h - 4, radius);
-  // Inner highlight
-  g.fillStyle(0xffffff, 0.35);
-  g.fillRoundedRect(6, 6, w - 12, (h - 12) * 0.4, radius * 0.6);
-  g.generateTexture(key, w, h);
-  g.destroy();
-}
+// Unused function - kept for potential future use
+// function makeRoundedRect(
+//   scene: Phaser.Scene,
+//   key: string,
+//   w: number,
+//   h: number,
+//   color: number,
+//   radius: number
+// ): void {
+//   if (scene.textures.exists(key)) return;
+//   const g = scene.make.graphics({ x: 0, y: 0 }, false);
+//   // Soft outer glow band
+//   g.fillStyle(color, 0.25);
+//   g.fillRoundedRect(0, 0, w, h, radius + 3);
+//   // Body
+//   g.fillStyle(color, 1);
+//   g.fillRoundedRect(2, 2, w - 4, h - 4, radius);
+//   // Inner highlight
+//   g.fillStyle(0xffffff, 0.35);
+//   g.fillRoundedRect(6, 6, w - 12, (h - 12) * 0.4, radius * 0.6);
+//   g.generateTexture(key, w, h);
+//   g.destroy();
+// }
 
 function makeGround(scene: Phaser.Scene): void {
   const key = 'ground';

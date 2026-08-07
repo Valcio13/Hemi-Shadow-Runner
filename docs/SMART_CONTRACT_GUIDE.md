@@ -404,7 +404,7 @@ Play the game and verify:
 
 ### Q: Do I need the contract for the game to work?
 
-**A**: No! The game works with gasless signatures (attestation mode). The contract is optional but adds on-chain leaderboards.
+**A**: Yes! The game requires the smart contract for on-chain score submission and leaderboard functionality. Scores are stored permanently on the blockchain.
 
 ### Q: Can I upgrade the contract later?
 

@@ -320,11 +320,11 @@ The Web3System uses **zero external libraries** for basic operations:
 - Chain switching via EIP-1193 `wallet_switchEthereumChain`
 - Signing via `personal_sign`
 
-**Why?** ethers.js / viem are 200KB+. We only need a signature - the native API is sufficient.
+**Why?** ethers.js v6 is lightweight and provides full contract interaction capabilities.
 
-### Gasless Attestation
+### On-Chain Score Submission
 
-Instead of on-chain transactions, scores are **signed messages**:
+Scores are submitted as blockchain transactions to the ShadowRunnerGame contract:
 
 ```typescript
 const message = `

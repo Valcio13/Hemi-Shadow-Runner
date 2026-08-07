@@ -12,7 +12,7 @@ import {
   WEB3,
   buildScoreMessage,
 } from '../config/Web3Config';
-import { GAME_CONTRACT_ABI, type GameStartedEvent } from '../../contracts/game-types';
+import { GAME_CONTRACT_ABI } from '../../contracts/game-types';
 import { BrowserProvider, Contract, type TransactionReceipt } from 'ethers';
 import { EventBus, GameEvents } from '../EventBus';
 
@@ -47,6 +47,8 @@ export interface Attestation {
   message: string;
   signature: string;
   chainId: number;
+  sessionId?: string;
+  txHash?: string;
 }
 
 type Listener = (state: WalletState) => void;

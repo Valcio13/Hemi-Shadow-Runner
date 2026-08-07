@@ -3,7 +3,9 @@ import { HUD } from './react/components/HUD';
 import { MainMenu } from './react/components/MainMenu';
 import { GameOverScreen } from './react/components/GameOverScreen';
 import { TransactionStatus } from './react/components/TransactionStatus';
+import { ChallengeBanner } from './react/components/ChallengeBanner';
 import { useGameState } from './react/hooks/useGameState';
+import { useChallenge } from './react/hooks/useChallenge';
 import {
   requestMainMenu,
   requestRestart,
@@ -26,6 +28,18 @@ export default function App() {
     highScore,
   } = useGameState();
 
+  const { challenge, checkScore, clearChallenge } = useChallenge();
+
+  // Check challenge when game is over
+  if (phase === 'over' && gameOver && challenge.active && !challenge.beaten) {
+    checkScore(gameOver.score);
+  }
+
+  const handleMainMenu = () => {
+    clearChallenge();
+    requestMainMenu();
+  };
+
   return (
     <div className="app-shell">
       <div className="game-frame">
@@ -42,6 +56,10 @@ export default function App() {
           chronoMs={chronoMs}
           hasRecovery={hasRecovery}
         />
+        {/* Challenge Banner - show during gameplay */}
+        {phase === 'playing' && challenge.active && (
+          <ChallengeBanner targetScore={challenge.targetScore} currentScore={score} />
+        )}
         <button
           className="mute-btn"
           onClick={requestToggleMute}
@@ -58,7 +76,9 @@ export default function App() {
             data={gameOver}
             highScore={highScore}
             onPlayAgain={requestRestart}
-            onMainMenu={requestMainMenu}
+            onMainMenu={handleMainMenu}
+            challengeScore={challenge.active ? challenge.targetScore : undefined}
+            beatChallenge={challenge.active ? challenge.beaten : undefined}
           />
         )}
       </div>
