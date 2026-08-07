@@ -80,16 +80,34 @@ export function usePlayerStats(): PlayerStats {
         let rank: number | null = null;
         
         try {
-          const leaderboardResponse = await fetch('/leaderboard.json');
-          if (leaderboardResponse.ok) {
-            const leaderboard = await leaderboardResponse.json();
-            const playerEntry = leaderboard.entries.find(
-              (entry: any) => entry.player.toLowerCase() === wallet.address!.toLowerCase()
-            );
+          // Try to get from real-time leaderboard cache first
+          const cachedLeaderboard = localStorage.getItem('leaderboard-cache');
+          if (cachedLeaderboard) {
+            const cache = JSON.parse(cachedLeaderboard);
+            const playerEntry = cache.entries[wallet.address.toLowerCase()];
             
             if (playerEntry) {
               cumulativeScore = playerEntry.score;
-              rank = playerEntry.rank;
+              // Calculate rank by comparing with other players
+              const allPlayers = Object.values(cache.entries) as any[];
+              const sortedPlayers = allPlayers.sort((a: any, b: any) => b.score - a.score);
+              rank = sortedPlayers.findIndex((p: any) => p.player.toLowerCase() === wallet.address!.toLowerCase()) + 1;
+            }
+          }
+          
+          // Fallback: fetch from static leaderboard.json if exists
+          if (cumulativeScore === 0) {
+            const leaderboardResponse = await fetch('/leaderboard.json');
+            if (leaderboardResponse.ok) {
+              const leaderboard = await leaderboardResponse.json();
+              const playerEntry = leaderboard.entries.find(
+                (entry: any) => entry.player.toLowerCase() === wallet.address!.toLowerCase()
+              );
+              
+              if (playerEntry) {
+                cumulativeScore = playerEntry.score;
+                rank = playerEntry.rank;
+              }
             }
           }
         } catch (err) {
