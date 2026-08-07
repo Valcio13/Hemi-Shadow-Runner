@@ -96,7 +96,7 @@ export function GameOverScreen({
             <span className="web3-check" aria-hidden>✓</span>
             Score recorded on-chain
             <a
-              href={`https://testnet.explorer.hemi.xyz/tx/${txHash}`}
+              href={`https://explorer.hemi.xyz/tx/${txHash}`}
               target="_blank"
               rel="noopener noreferrer"
               className="web3-tx-link"

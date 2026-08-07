@@ -127,7 +127,7 @@ export function Leaderboard({ onClose }: LeaderboardProps) {
                       </div>
                       <div className="lb-col lb-player">
                         <a
-                          href={`https://testnet.explorer.hemi.xyz/address/${entry.player}`}
+                          href={`https://explorer.hemi.xyz/address/${entry.player}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="lb-player-link"

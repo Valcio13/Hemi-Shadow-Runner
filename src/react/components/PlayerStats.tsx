@@ -100,7 +100,7 @@ export function PlayerStats({ onClose }: PlayerStatsProps) {
         <div className="stats-player-info">
           <div className="stats-address">
             <a
-              href={`https://testnet.explorer.hemi.xyz/address/${wallet.address}`}
+              href={`https://explorer.hemi.xyz/address/${wallet.address}`}
               target="_blank"
               rel="noopener noreferrer"
               className="stats-address-link"
@@ -171,7 +171,7 @@ export function PlayerStats({ onClose }: PlayerStatsProps) {
                         {timeAgo(game.timestamp)}
                       </div>
                       <a
-                        href={`https://testnet.explorer.hemi.xyz/tx/${game.txHash}`}
+                        href={`https://explorer.hemi.xyz/tx/${game.txHash}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="stats-game-link"

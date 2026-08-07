@@ -82,7 +82,7 @@ export function TransactionStatus() {
           <div className="tx-status-message">{tx.message}</div>
           {tx.txHash && (
             <a
-              href={`https://testnet.explorer.hemi.xyz/tx/${tx.txHash}`}
+              href={`https://explorer.hemi.xyz/tx/${tx.txHash}`}
               target="_blank"
               rel="noopener noreferrer"
               className="tx-status-link"
