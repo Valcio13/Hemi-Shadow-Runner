@@ -34,14 +34,19 @@ export class CoinManager {
     this.getRNG = getRNG;
     this.group = scene.physics.add.group({ allowGravity: false });
 
+    // Polished coin sparkle: More vibrant, explosive feel
     this.sparkle = scene.add.particles(0, 0, 'sparkle', {
-      speed: { min: 40, max: 130 },
-      scale: { start: 0.9, end: 0 },
+      speed: { min: 60, max: 180 },
+      angle: { min: 0, max: 360 }, // Full 360° burst
+      scale: { start: 1.2, end: 0 },
       alpha: { start: 1, end: 0 },
-      lifespan: 360,
-      quantity: 8,
-      tint: [0xffa34d, 0xff6c15, 0xffffff],
+      lifespan: 450,
+      quantity: 12, // More particles for satisfying collection
+      tint: [0xffa34d, 0xff6c15, 0xffffff, 0xffd447], // More color variety
+      blendMode: Phaser.BlendModes.ADD, // Glow effect
       emitting: false,
+      rotate: { min: 0, max: 360 }, // Particles spin
+      gravityY: -50, // Float upward slightly
     });
     this.sparkle.setDepth(22);
     this.rollNextGap();

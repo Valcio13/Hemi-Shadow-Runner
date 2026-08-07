@@ -140,83 +140,26 @@ function makeRecoveryChip(scene: Phaser.Scene): void {
   g.destroy();
 }
 
-/** Astronaut character - cute space runner with helmet and striped suit */
+/** Simple rectangle player - clean and minimal */
 function makeAstronaut(scene: Phaser.Scene, key: string, color: number): void {
   if (scene.textures.exists(key)) return;
   const w = PLAYER.WIDTH;
   const h = PLAYER.HEIGHT;
   const g = scene.make.graphics({ x: 0, y: 0 }, false);
   
-  const cx = w / 2;
-  const headY = 10;
-  const headR = 8;
-  const bodyY = headY + headR + 2;
-  const bodyH = 18;
-  const legY = bodyY + bodyH;
+  // Simple rounded rectangle with glow
   
   // Outer glow
-  g.fillStyle(color, 0.2);
-  g.fillCircle(cx, headY, headR + 2);
-  g.fillRect(cx - 8, bodyY - 1, 16, bodyH + 4);
+  g.fillStyle(color, 0.3);
+  g.fillRoundedRect(2, 2, w - 4, h - 4, 6);
   
-  // Body - white with rounded corners
-  g.fillStyle(0xffffff, 1);
-  g.fillRect(cx - 7, bodyY, 14, bodyH);
+  // Main body - solid color rectangle
+  g.fillStyle(color, 1);
+  g.fillRoundedRect(4, 4, w - 8, h - 8, 5);
   
-  // Orange stripes on body (3 stripes)
-  g.fillStyle(0xff8833, 1);
-  g.fillRect(cx - 7, bodyY + 3, 14, 3);
-  g.fillRect(cx - 7, bodyY + 9, 14, 3);
-  g.fillRect(cx - 7, bodyY + 15, 14, 3);
-  
-  // Arms
-  g.fillStyle(0xffffff, 1);
-  // Left arm
-  g.fillRect(cx - 11, bodyY + 2, 4, 10);
-  g.fillStyle(0xff8833, 1);
-  g.fillRect(cx - 11, bodyY + 4, 4, 2);
-  // Right arm
-  g.fillStyle(0xffffff, 1);
-  g.fillRect(cx + 7, bodyY + 2, 4, 10);
-  g.fillStyle(0xff8833, 1);
-  g.fillRect(cx + 7, bodyY + 4, 4, 2);
-  
-  // Legs
-  g.fillStyle(0xffffff, 1);
-  // Left leg
-  g.fillRect(cx - 5, legY, 4, 8);
-  g.fillStyle(0xff8833, 1);
-  g.fillRect(cx - 5, legY + 2, 4, 2);
-  // Right leg
-  g.fillStyle(0xffffff, 1);
-  g.fillRect(cx + 1, legY, 4, 8);
-  g.fillStyle(0xff8833, 1);
-  g.fillRect(cx + 1, legY + 2, 4, 2);
-  
-  // Helmet - sphere with visor
-  g.fillStyle(0xeeeeee, 0.9);
-  g.fillCircle(cx, headY, headR);
-  
-  // Helmet shine
-  g.fillStyle(0xffffff, 0.6);
-  g.fillCircle(cx - 2, headY - 2, 3);
-  
-  // Visor - dark tinted glass with colored glow
-  g.fillStyle(color, 0.7);
-  g.fillEllipse(cx, headY + 1, headR - 3, headR - 4);
-  
-  // Visor highlight
-  g.fillStyle(0xffffff, 0.4);
-  g.fillEllipse(cx - 1, headY, 3, 2);
-  
-  // Helmet rim/collar
-  g.lineStyle(2, 0xcccccc, 1);
-  g.strokeCircle(cx, headY, headR);
-  
-  // Boots
-  g.fillStyle(0x444444, 1);
-  g.fillRect(cx - 6, legY + 7, 5, 3);
-  g.fillRect(cx + 1, legY + 7, 5, 3);
+  // Inner highlight for depth
+  g.fillStyle(0xffffff, 0.3);
+  g.fillRoundedRect(6, 6, w - 12, (h - 12) * 0.4, 3);
   
   g.generateTexture(key, w, h);
   g.destroy();

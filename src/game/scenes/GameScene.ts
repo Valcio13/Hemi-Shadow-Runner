@@ -189,15 +189,18 @@ export class GameScene extends Phaser.Scene {
       .on('down', () => this.audio.toggleMute());
 
     // --- Landing dust emitter (starts off; bursts on touchdown)
+    // Polished: More dynamic spread, better colors, smoother fade
     this.dust = this.add.particles(0, 0, 'dust', {
-      speed: { min: 60, max: 160 },
+      speed: { min: 80, max: 200 },
       angle: { min: 200, max: 340 },
-      scale: { start: 0.6, end: 0 },
-      alpha: { start: 0.7, end: 0 },
-      lifespan: 380,
-      quantity: 10,
-      tint: 0x9fb4d8,
+      scale: { start: 0.8, end: 0 },
+      alpha: { start: 0.8, end: 0 },
+      lifespan: 450,
+      quantity: 12,
+      tint: [0x9fb4d8, 0xb8c7e0, 0xd4dff0], // Multiple dust tones
+      blendMode: Phaser.BlendModes.ADD, // Glow effect
       emitting: false,
+      gravityY: 100, // Particles fall slightly
     });
     this.dust.setDepth(15);
 

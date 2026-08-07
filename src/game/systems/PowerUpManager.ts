@@ -216,15 +216,20 @@ export class PowerUpManager {
         : kind === 'chrono'
           ? POWERUP.CHRONO.COLOR_GLOW
           : POWERUP.RECOVERY.COLOR_GLOW;
+    
+    // Polished: More magical/rare feel with better motion
     const em = this.scene.add.particles(0, 0, 'sparkle', {
-      speed: { min: 8, max: 34 },
-      scale: { start: 0.5, end: 0 },
-      alpha: { start: 0.85, end: 0 },
-      lifespan: 520,
-      frequency: 110,
-      quantity: 1,
-      tint,
-      blendMode: Phaser.BlendModes.ADD,
+      speed: { min: 15, max: 50 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 0.7, end: 0 },
+      alpha: { start: 0.95, end: 0 },
+      lifespan: 600,
+      frequency: 90, // Slightly faster emission
+      quantity: 2, // More particles per emission
+      tint: [tint, 0xffffff], // Mix of color + white sparkles
+      blendMode: Phaser.BlendModes.ADD, // Glow effect
+      rotate: { min: 0, max: 360 }, // Particles spin
+      gravityY: -20, // Float upward slightly
     });
     em.setDepth(18);
     em.startFollow(pu);

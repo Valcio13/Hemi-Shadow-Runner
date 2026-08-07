@@ -116,18 +116,24 @@ export class DashSystem {
     if (now - this.lastTrailAt < DASH.TRAIL_RATE_MS) return;
     this.lastTrailAt = now;
     const s = this.player.sprite;
+    
+    // Polished: More vibrant trail with better fade and slight scale
     const ghost = this.scene.add
       .image(s.x, s.y, s.texture.key)
       .setOrigin(s.originX, s.originY)
       .setDisplaySize(s.displayWidth, s.displayHeight)
       .setDepth(19)
       .setTint(DASH.COLOR)
-      .setAlpha(0.5);
+      .setAlpha(0.7) // Start more visible
+      .setScale(s.scaleX, s.scaleY); // Match current scale (squash/stretch)
+    
     this.scene.tweens.add({
       targets: ghost,
       alpha: 0,
-      duration: 260,
-      ease: 'Quad.out',
+      scaleX: s.scaleX * 0.85, // Shrink slightly for motion blur effect
+      scaleY: s.scaleY * 0.85,
+      duration: 300,
+      ease: 'Cubic.out', // Smoother ease
       onComplete: () => ghost.destroy(),
     });
   }

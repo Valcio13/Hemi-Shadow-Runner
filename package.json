@@ -19,9 +19,12 @@
     "interact:game": "hardhat run scripts/interact-game.ts --network hemiSepolia",
     "interact": "hardhat run scripts/interact.ts --network hemiSepolia",
     "leaderboard:fetch": "hardhat run scripts/fetch-leaderboard.cjs --network hemiSepolia",
+    "leaderboard:fetch:mainnet": "hardhat run scripts/fetch-leaderboard.cjs --network hemi",
     "leaderboard:watch": "nodemon --watch contracts --ext sol,ts --exec \"npm run leaderboard:fetch\"",
     "index:leaderboard": "hardhat run scripts/index-leaderboard.ts --network hemiSepolia",
-    "verify": "hardhat verify --network hemiSepolia"
+    "verify": "hardhat verify --network hemiSepolia",
+    "verify:mainnet": "hardhat verify --network hemi",
+    "prepare:mainnet": "node scripts/prepare-mainnet.cjs"
   },
   "dependencies": {
     "ethers": "^6.10.0",
