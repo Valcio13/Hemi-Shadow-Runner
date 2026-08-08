@@ -32,7 +32,7 @@ export class AudioSystem {
   private bgMusic: HTMLAudioElement | null = null;
   private bgMusicGain: GainNode | null = null;
   private bgMusicSource: MediaElementAudioSourceNode | null = null;
-  private musicVolume: number = 0.85;
+  private musicVolume: number = 0.5;
   private sfxVolume: number = 1.0;
 
   constructor() {

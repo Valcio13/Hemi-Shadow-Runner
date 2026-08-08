@@ -14,7 +14,7 @@ interface AudioSettingsProps {
 }
 
 export function AudioSettings({ onClose }: AudioSettingsProps) {
-  const [musicVolume, setMusicVolume] = useState(85);
+  const [musicVolume, setMusicVolume] = useState(50);
   const [sfxVolume, setSfxVolume] = useState(100);
   const [muted, setMuted] = useState(false);
 
