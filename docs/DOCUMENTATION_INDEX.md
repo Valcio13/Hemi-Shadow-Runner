@@ -19,6 +19,7 @@ Complete documentation guide for Hemi Shadow Runner.
 - **[PLAYER_STATS_FEATURE.md](PLAYER_STATS_FEATURE.md)** - Player statistics system
 - **[SOCIAL_FEATURES.md](SOCIAL_FEATURES.md)** - Sharing and challenge mode
 - **[REAL_TIME_LEADERBOARD.md](REAL_TIME_LEADERBOARD.md)** - Real-time blockchain leaderboard
+- **[MOBILE_OPTIMIZATION.md](MOBILE_OPTIMIZATION.md)** - Mobile support and touch controls
 - **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Implementation notes
 
 ### Smart Contracts
@@ -70,6 +71,7 @@ Start with **[README.md](../README.md)** to learn about the game and how to play
 - **Social Features** → [SOCIAL_FEATURES.md](SOCIAL_FEATURES.md)
 - **Leaderboard System** → [REAL_TIME_LEADERBOARD.md](REAL_TIME_LEADERBOARD.md)
 - **RNG System** → [SEEDED_RNG_INTEGRATION.md](SEEDED_RNG_INTEGRATION.md)
+- **Mobile Support** → [MOBILE_OPTIMIZATION.md](MOBILE_OPTIMIZATION.md)
 
 ---
 

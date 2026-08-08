@@ -14,6 +14,7 @@ TODO: Add gameplay GIF here
 ## ✨ What's New
 
 **🎉 Latest Features**:
+- ✅ **Mobile Support** - Full touch controls and mobile wallet integration
 - ✅ **Mainnet Launch** - Now live on Hemi Mainnet with real ETH
 - ✅ **Real-Time Leaderboard** - Direct blockchain queries, updates every 30s
 - ✅ **Player Statistics** - Track your performance, view achievements, and see your rank
@@ -57,6 +58,7 @@ TODO: Add screenshots here
   - 💚 **Recovery Protocol**: Extra life with invulnerability (instant)
 - **Procedural Assets**: All graphics and audio generated at runtime - zero image/audio files
 - **Responsive Controls**: Forgiving mechanics with coyote time and input buffering
+- **📱 Mobile Support**: Full touch controls, responsive UI, and mobile wallet integration
 
 ### Blockchain Integration
 - **On-Chain Scoring**: Every game recorded on Hemi blockchain
@@ -73,14 +75,36 @@ TODO: Add screenshots here
 - **On-Chain Proof**: Every shared score includes blockchain verification link
 - **Clipboard Sharing**: Copy formatted text for Discord, Telegram, WhatsApp, etc.
 
+### Mobile Experience
+- **Touch Controls**: On-screen buttons for phase shift, dash, and tap-to-jump
+- **Mobile Wallet Support**: Deep links for MetaMask, Trust Wallet, Rainbow
+- **Responsive Design**: Optimized UI for phones and tablets
+- **Landscape Mode**: Full support with compact layout
+- **Safe Area Insets**: Works perfectly on notched devices (iPhone X+)
+- **Auto-Detection**: Seamlessly switches between desktop and mobile controls
+
 ## 🚀 Quick Start
 
 ### Prerequisites
 
+**For Development:**
 - Node.js 18+ 
 - npm or yarn
 - MetaMask or Web3 wallet (for blockchain features)
 - Hemi Mainnet ETH ([Bridge from Ethereum](https://app.hemi.xyz/en/bridge))
+
+**For Playing (Desktop):**
+- Modern browser (Chrome, Firefox, Safari, Edge)
+- MetaMask or compatible Web3 wallet browser extension
+- Hemi Mainnet ETH for transaction fees
+
+**For Playing (Mobile):**
+- iOS 15+ or Android 8+ 
+- Mobile Web3 wallet app:
+  - [MetaMask Mobile](https://metamask.io/download/)
+  - [Trust Wallet](https://trustwallet.com/)
+  - [Rainbow Wallet](https://rainbow.me/)
+- Hemi Mainnet ETH for transaction fees
 
 ### Installation
 
@@ -113,12 +137,25 @@ npm run preview
 
 ### Controls
 
+**Desktop:**
+
 | Action | Key(s) | Alternative |
 |--------|--------|-------------|
-| Jump | `SPACE` / `UP` / `W` | Left-click / Tap screen |
-| Phase Shift | `SHIFT` / `F` | Right-click / Two-finger tap |
+| Jump | `SPACE` / `UP` / `W` | Left-click |
+| Phase Shift | `SHIFT` / `F` | Right-click |
 | Dash | `E` | (when meter is full) |
 | Mute | `M` | Click 🔊 button |
+
+**Mobile:**
+
+| Action | Control |
+|--------|---------|
+| Jump | Tap anywhere on screen |
+| Phase Shift | Left button (⚡ SHIFT) |
+| Dash | Right button (� DASH) |
+| Mute | Tap �🔊 button |
+
+> 💡 **Mobile Tip**: Play in portrait mode for best experience. Landscape mode is supported with a compact UI.
 
 ### Game Mechanics
 
@@ -148,6 +185,33 @@ npm run preview
 - **Strategic Phasing**: 500ms cooldown between phases - plan your switches!
 - **Dash Timing**: Use dash to smash obstacles or escape tight situations
 - **Power-up Stacking**: Genesis Shard + Dash = massive coin collection
+
+### 📱 Playing on Mobile
+
+**Wallet Setup:**
+1. Install a mobile Web3 wallet (MetaMask, Trust Wallet, or Rainbow)
+2. Add Hemi Mainnet to your wallet (or it will be added automatically)
+3. Bridge some ETH to Hemi Network via [Hemi Bridge](https://app.hemi.xyz/en/bridge)
+
+**Connecting to Game:**
+- **Option A**: Open game from wallet's in-app browser (recommended)
+- **Option B**: Visit game URL and tap "Connect Wallet" to see available wallets
+
+**Touch Controls:**
+- **Tap screen** = Jump (tap anywhere except buttons)
+- **Left button** (⚡ SHIFT) = Phase shift between planes
+- **Right button** (💨 DASH) = Dash when meter is full
+- **🔊 Button** (top-right) = Mute/unmute audio
+
+**Tips for Mobile:**
+- Portrait mode provides best experience
+- Landscape mode supported with compact UI
+- Touch controls are hidden when playing on desktop
+- Enable full-screen mode for immersive gameplay
+- Game automatically adapts to screen size
+
+**Mobile Wallet Deep Links:**
+The game will automatically detect which wallets you have installed and show quick-launch buttons. If no wallet is detected, you'll see installation links.
 
 ## 🔗 Blockchain Features
 

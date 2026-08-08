@@ -6,6 +6,7 @@
  * - submitScore() → submit final score on-chain
  *
  * Uses ethers.js BrowserProvider for contract calls.
+ * Supports mobile wallet connections via deep links.
  */
 import {
   DEFAULT_CHAIN,
@@ -15,6 +16,7 @@ import {
 import { GAME_CONTRACT_ABI } from '../../contracts/game-types';
 import { BrowserProvider, Contract, type TransactionReceipt } from 'ethers';
 import { EventBus, GameEvents } from '../EventBus';
+import { MobileWalletHelper } from './MobileWalletHelper';
 
 // Minimal shape of an EIP-1193 provider — only what we call.
 interface Eip1193Provider {
@@ -124,7 +126,16 @@ export class Web3System {
   async connect(): Promise<void> {
     const provider = this.resolveProvider();
     if (!provider) {
-      this.patch({ error: 'No wallet detected. Install MetaMask to submit.' });
+      // On mobile without wallet, show instructions and potentially redirect
+      if (MobileWalletHelper.isMobile()) {
+        if (MobileWalletHelper.shouldUseDeepLink()) {
+          const instructions = MobileWalletHelper.getInstallInstructions();
+          this.patch({ error: instructions });
+          return;
+        }
+      } else {
+        this.patch({ error: 'No wallet detected. Install MetaMask to submit.' });
+      }
       return;
     }
     this.patch({ connecting: true, error: null });
@@ -153,6 +164,29 @@ export class Web3System {
     } catch (err) {
       this.patch({ connecting: false, error: this.describe(err) });
     }
+  }
+
+  /**
+   * Open mobile wallet via deep link (MetaMask mobile)
+   */
+  openMobileWallet(): void {
+    if (MobileWalletHelper.isMobile()) {
+      MobileWalletHelper.openMetaMaskMobile();
+    }
+  }
+
+  /**
+   * Check if user is on mobile device
+   */
+  isMobile(): boolean {
+    return MobileWalletHelper.isMobile();
+  }
+
+  /**
+   * Get supported mobile wallets for display in UI
+   */
+  getMobileWallets() {
+    return MobileWalletHelper.getSupportedWallets();
   }
 
   /** Switch to Hemi; if the wallet doesn't know it, add it then switch. */

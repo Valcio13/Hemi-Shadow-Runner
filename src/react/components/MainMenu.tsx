@@ -11,10 +11,12 @@ import { useEffect, useState } from 'react';
 import { useWallet } from '../hooks/useWallet';
 import { useChallenge } from '../hooks/useChallenge';
 import { DEFAULT_CHAIN } from '../../game/config/Web3Config';
+import { web3 } from '../../game/systems/Web3System';
 import { Leaderboard } from './Leaderboard';
 import { PlayerStats } from './PlayerStats';
 import { ChallengeAccept } from './ChallengeAccept';
 import { AudioSettings } from './AudioSettings';
+import { MobileWalletSelector } from './MobileWalletSelector';
 
 interface MainMenuProps {
   highScore: number;
@@ -42,6 +44,8 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
   const [showStats, setShowStats] = useState(false);
   const [showAudioSettings, setShowAudioSettings] = useState(false);
   const [showChallengeAccept, setShowChallengeAccept] = useState(challenge.active);
+  const [showMobileWalletSelector, setShowMobileWalletSelector] = useState(false);
+  const isMobile = web3.isMobile();
 
   // Space / Enter start the run. Bound on window because the Phaser canvas
   // has focus by default and InputSystem is disabled in attract mode.
@@ -57,7 +61,13 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
   }, [onPlay]);
 
   const handleConnect = () => {
-    void wallet.connect();
+    // On mobile, show wallet selector
+    if (isMobile) {
+      setShowMobileWalletSelector(true);
+    } else {
+      // On desktop, connect directly
+      void wallet.connect();
+    }
   };
 
   const handleChallengeAccept = () => {
@@ -92,6 +102,10 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
 
   if (showAudioSettings) {
     return <AudioSettings onClose={() => setShowAudioSettings(false)} />;
+  }
+
+  if (showMobileWalletSelector) {
+    return <MobileWalletSelector onClose={() => setShowMobileWalletSelector(false)} />;
   }
 
   return (
