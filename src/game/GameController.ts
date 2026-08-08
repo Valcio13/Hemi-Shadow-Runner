@@ -40,8 +40,11 @@ export function getCurrentSessionId(): bigint | null {
 }
 
 export function requestRestart(): void {
-  currentSessionId = null; // Clear session on restart
-  handlers.restart?.();
+  // Clear session before starting new one
+  currentSessionId = null;
+  // Restart should go through the same flow as starting a new game
+  // This ensures Web3 transaction is initiated
+  requestStart();
 }
 
 /**
