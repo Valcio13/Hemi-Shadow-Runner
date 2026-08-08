@@ -14,6 +14,7 @@ import { DEFAULT_CHAIN } from '../../game/config/Web3Config';
 import { Leaderboard } from './Leaderboard';
 import { PlayerStats } from './PlayerStats';
 import { ChallengeAccept } from './ChallengeAccept';
+import { AudioSettings } from './AudioSettings';
 
 interface MainMenuProps {
   highScore: number;
@@ -39,6 +40,7 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
   const connected = !!wallet.address;
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showStats, setShowStats] = useState(false);
+  const [showAudioSettings, setShowAudioSettings] = useState(false);
   const [showChallengeAccept, setShowChallengeAccept] = useState(challenge.active);
 
   // Space / Enter start the run. Bound on window because the Phaser canvas
@@ -88,6 +90,10 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
     return <PlayerStats onClose={() => setShowStats(false)} />;
   }
 
+  if (showAudioSettings) {
+    return <AudioSettings onClose={() => setShowAudioSettings(false)} />;
+  }
+
   return (
     <div className="overlay overlay-menu">
       <div className="panel panel-menu">
@@ -121,6 +127,10 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
               📊 Your Stats
             </button>
           )}
+          
+          <button className="btn btn-ghost btn-audio" onClick={() => setShowAudioSettings(true)}>
+            🔊 Audio Settings
+          </button>
         </div>
 
         {/* --- Wallet Connection --- */}

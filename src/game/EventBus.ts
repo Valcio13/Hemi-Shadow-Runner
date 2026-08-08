@@ -18,6 +18,8 @@ export const GameEvents = {
   DASH_ACTIVATED: 'game:dash-activated',
   SHADOW_CHANGED: 'game:shadow-changed',
   AUDIO_MUTE_CHANGED: 'game:audio-mute-changed',
+  MUSIC_VOLUME_CHANGED: 'game:music-volume-changed',
+  SFX_VOLUME_CHANGED: 'game:sfx-volume-changed',
   // Power-up HUD events (M8). Payloads carry remaining ms / availability.
   GENESIS_CHANGED: 'game:genesis-changed',
   CHRONO_CHANGED: 'game:chrono-changed',

@@ -32,9 +32,21 @@ export class AudioSystem {
   private bgMusic: HTMLAudioElement | null = null;
   private bgMusicGain: GainNode | null = null;
   private bgMusicSource: MediaElementAudioSourceNode | null = null;
+  private musicVolume: number = 0.85;
+  private sfxVolume: number = 1.0;
 
   constructor() {
     this.muted = localStorage.getItem(AUDIO.MUTE_KEY) === '1';
+    
+    // Load saved volumes
+    const savedMusic = localStorage.getItem('music-volume');
+    const savedSfx = localStorage.getItem('sfx-volume');
+    if (savedMusic) this.musicVolume = parseInt(savedMusic) / 100;
+    if (savedSfx) this.sfxVolume = parseInt(savedSfx) / 100;
+    
+    // Listen for volume changes from UI
+    EventBus.on(GameEvents.MUSIC_VOLUME_CHANGED, this.setMusicVolume, this);
+    EventBus.on(GameEvents.SFX_VOLUME_CHANGED, this.setSfxVolume, this);
   }
 
   /** Create the context on first use so we're inside a user-gesture stack. */
@@ -70,6 +82,24 @@ export class AudioSystem {
 
   toggleMute(): void {
     this.setMuted(!this.muted);
+  }
+
+  setMusicVolume(volume: number): void {
+    this.musicVolume = Math.max(0, Math.min(1, volume));
+    if (this.bgMusic) {
+      this.bgMusic.volume = this.musicVolume;
+    }
+    if (this.bgMusicGain) {
+      this.bgMusicGain.gain.value = this.musicVolume;
+    }
+  }
+
+  setSfxVolume(volume: number): void {
+    this.sfxVolume = Math.max(0, Math.min(1, volume));
+    // Master gain will be applied to all sound effects
+    if (this.master && !this.muted) {
+      this.master.gain.value = AUDIO.MASTER_GAIN * this.sfxVolume;
+    }
   }
 
   /** Emit the current mute state so the HUD can initialize its icon. */
@@ -120,7 +150,7 @@ export class AudioSystem {
     if (!this.bgMusic) {
       this.bgMusic = new Audio('/slimeyfox-gameotoon-481311.mp3');
       this.bgMusic.loop = true;
-      this.bgMusic.volume = 0.85; // Background music at 85% volume
+      this.bgMusic.volume = this.musicVolume; // Use saved/current volume
       this.bgMusic.muted = this.muted;
 
       // Connect to Web Audio API for better control
@@ -128,7 +158,7 @@ export class AudioSystem {
         try {
           this.bgMusicSource = this.ctx.createMediaElementSource(this.bgMusic);
           this.bgMusicGain = this.ctx.createGain();
-          this.bgMusicGain.gain.value = 0.85;
+          this.bgMusicGain.gain.value = this.musicVolume;
           this.bgMusicSource.connect(this.bgMusicGain);
           this.bgMusicGain.connect(this.master);
         } catch (err) {

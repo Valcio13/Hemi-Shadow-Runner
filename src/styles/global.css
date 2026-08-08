@@ -1862,3 +1862,130 @@ body,
   background: rgba(255, 255, 255, 0.03);
   border-radius: 6px;
 }
+
+
+/* ========== Audio Settings Panel ========== */
+.panel-audio-settings {
+  max-width: 500px;
+}
+
+.audio-settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.audio-setting-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.audio-setting-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.audio-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.audio-slider {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.audio-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.audio-slider::-webkit-slider-thumb:hover {
+  background: var(--primary-hover);
+}
+
+.audio-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.audio-slider::-moz-range-thumb:hover {
+  background: var(--primary-hover);
+}
+
+.audio-slider:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.audio-slider:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+  background: #666;
+}
+
+.audio-slider:disabled::-moz-range-thumb {
+  cursor: not-allowed;
+  background: #666;
+}
+
+.audio-volume-value {
+  min-width: 45px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.95rem;
+}
+
+.audio-mute-toggle {
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.audio-mute-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--primary-hover);
+}
+
+.audio-mute-toggle.muted {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.audio-settings-info {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
