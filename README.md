@@ -4,6 +4,8 @@ A fast-paced endless runner with blockchain integration on Hemi Network. Phase b
 
 ![Hemi Shadow Runner](https://img.shields.io/badge/Phaser-3.80-blue) ![React](https://img.shields.io/badge/React-18.3-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue) ![Hemi](https://img.shields.io/badge/Hemi-Mainnet-green)
 
+![Gameplay Demo](.github/media/gameplay.gif)
+
 > 🎮 **[Play Now](https://hemi-shadow-runner.valcio222.workers.dev/)** | 📜 **[View Contract](https://explorer.hemi.xyz/address/0xD2c7C67721F155424A24c148D15bCeba36F5dfEe)** | 📚 **[Full Docs](docs/DOCUMENTATION_INDEX.md)**
 
 ## ✨ Key Features
