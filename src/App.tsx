@@ -4,6 +4,7 @@ import { MainMenu } from './react/components/MainMenu';
 import { GameOverScreen } from './react/components/GameOverScreen';
 import { TransactionStatus } from './react/components/TransactionStatus';
 import { ChallengeBanner } from './react/components/ChallengeBanner';
+import { TouchControls } from './react/components/TouchControls';
 import { useGameState } from './react/hooks/useGameState';
 import { useChallenge } from './react/hooks/useChallenge';
 import {
@@ -45,6 +46,11 @@ export default function App() {
       <div className="game-frame">
         <GameCanvas />
         <TransactionStatus />
+        <TouchControls 
+          phase={phase} 
+          dashReady={dashMeter >= 100} 
+          currentPlane={plane}
+        />
         <HUD
           phase={phase}
           score={score}
