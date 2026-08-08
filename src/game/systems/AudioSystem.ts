@@ -120,7 +120,7 @@ export class AudioSystem {
     if (!this.bgMusic) {
       this.bgMusic = new Audio('/slimeyfox-gameotoon-481311.mp3');
       this.bgMusic.loop = true;
-      this.bgMusic.volume = 0.6; // Background music at 60% volume
+      this.bgMusic.volume = 0.85; // Background music at 85% volume
       this.bgMusic.muted = this.muted;
 
       // Connect to Web Audio API for better control
@@ -128,7 +128,7 @@ export class AudioSystem {
         try {
           this.bgMusicSource = this.ctx.createMediaElementSource(this.bgMusic);
           this.bgMusicGain = this.ctx.createGain();
-          this.bgMusicGain.gain.value = 0.6;
+          this.bgMusicGain.gain.value = 0.85;
           this.bgMusicSource.connect(this.bgMusicGain);
           this.bgMusicGain.connect(this.master);
         } catch (err) {
