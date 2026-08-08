@@ -59,7 +59,7 @@ export class AudioSystem {
     if (!Ctor) return; // audio unsupported — fail silent, game still plays
     this.ctx = new Ctor();
     this.master = this.ctx.createGain();
-    this.master.gain.value = this.muted ? 0 : AUDIO.MASTER_GAIN;
+    this.master.gain.value = this.muted ? 0 : (AUDIO.MASTER_GAIN * this.sfxVolume);
     this.master.connect(this.ctx.destination);
   }
 
@@ -71,7 +71,7 @@ export class AudioSystem {
     this.muted = muted;
     localStorage.setItem(AUDIO.MUTE_KEY, muted ? '1' : '0');
     if (this.master) {
-      this.master.gain.value = muted ? 0 : AUDIO.MASTER_GAIN;
+      this.master.gain.value = muted ? 0 : (AUDIO.MASTER_GAIN * this.sfxVolume);
     }
     // Also mute/unmute background music
     if (this.bgMusic) {
@@ -154,13 +154,14 @@ export class AudioSystem {
       this.bgMusic.muted = this.muted;
 
       // Connect to Web Audio API for better control
-      if (this.ctx && this.master && !this.bgMusicSource) {
+      // Note: Music has its own gain node, separate from SFX master gain
+      if (this.ctx && !this.bgMusicSource) {
         try {
           this.bgMusicSource = this.ctx.createMediaElementSource(this.bgMusic);
           this.bgMusicGain = this.ctx.createGain();
           this.bgMusicGain.gain.value = this.musicVolume;
           this.bgMusicSource.connect(this.bgMusicGain);
-          this.bgMusicGain.connect(this.master);
+          this.bgMusicGain.connect(this.ctx.destination); // Connect directly to destination, not through master
         } catch (err) {
           // MediaElementSource can only be created once
           console.warn('Background music source already created');
