@@ -29,6 +29,9 @@ export class AudioSystem {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
   private muted: boolean;
+  private bgMusic: HTMLAudioElement | null = null;
+  private bgMusicGain: GainNode | null = null;
+  private bgMusicSource: MediaElementAudioSourceNode | null = null;
 
   constructor() {
     this.muted = localStorage.getItem(AUDIO.MUTE_KEY) === '1';
@@ -57,6 +60,10 @@ export class AudioSystem {
     localStorage.setItem(AUDIO.MUTE_KEY, muted ? '1' : '0');
     if (this.master) {
       this.master.gain.value = muted ? 0 : AUDIO.MASTER_GAIN;
+    }
+    // Also mute/unmute background music
+    if (this.bgMusic) {
+      this.bgMusic.muted = muted;
     }
     EventBus.emit(GameEvents.AUDIO_MUTE_CHANGED, muted);
   }
@@ -99,5 +106,79 @@ export class AudioSystem {
       osc.disconnect();
       env.disconnect();
     };
+  }
+
+  /**
+   * Start background music. Should be called once when gameplay begins.
+   * The music will loop indefinitely until stopped.
+   */
+  startBackgroundMusic(): void {
+    this.ensureContext();
+    if (!this.ctx) return;
+
+    // Only create the audio element once
+    if (!this.bgMusic) {
+      this.bgMusic = new Audio('/slimeyfox-gameotoon-481311.mp3');
+      this.bgMusic.loop = true;
+      this.bgMusic.volume = 0.3; // Background music at 30% volume
+      this.bgMusic.muted = this.muted;
+
+      // Connect to Web Audio API for better control
+      if (this.ctx && this.master && !this.bgMusicSource) {
+        try {
+          this.bgMusicSource = this.ctx.createMediaElementSource(this.bgMusic);
+          this.bgMusicGain = this.ctx.createGain();
+          this.bgMusicGain.gain.value = 0.3;
+          this.bgMusicSource.connect(this.bgMusicGain);
+          this.bgMusicGain.connect(this.master);
+        } catch (err) {
+          // MediaElementSource can only be created once
+          console.warn('Background music source already created');
+        }
+      }
+    }
+
+    // Resume audio context if suspended
+    if (this.ctx.state === 'suspended') {
+      void this.ctx.resume();
+    }
+
+    // Start playing
+    void this.bgMusic.play().catch((err) => {
+      console.warn('Background music autoplay blocked:', err);
+    });
+  }
+
+  /**
+   * Stop background music (e.g., when returning to menu or game over)
+   */
+  stopBackgroundMusic(): void {
+    if (this.bgMusic) {
+      this.bgMusic.pause();
+      this.bgMusic.currentTime = 0;
+    }
+  }
+
+  /**
+   * Pause background music without resetting position
+   */
+  pauseBackgroundMusic(): void {
+    if (this.bgMusic) {
+      this.bgMusic.pause();
+    }
+  }
+
+  /**
+   * Resume background music from where it was paused
+   */
+  resumeBackgroundMusic(): void {
+    if (this.bgMusic && this.ctx) {
+      if (this.ctx.state === 'suspended') {
+        void this.ctx.resume();
+      }
+      void this.bgMusic.play().catch((err) => {
+        console.warn('Failed to resume background music:', err);
+      });
+    }
   }
 }

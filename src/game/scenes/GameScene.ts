@@ -266,6 +266,10 @@ export class GameScene extends Phaser.Scene {
 
     // Menu owns input; the player shouldn't be able to jump behind the overlay.
     this.inputSystem.setEnabled(false);
+    
+    // Stop background music when returning to menu
+    this.audio.stopBackgroundMusic();
+    
     EventBus.emit(GameEvents.MENU_SHOWN);
   }
 
@@ -313,6 +317,9 @@ export class GameScene extends Phaser.Scene {
     EventBus.emit(GameEvents.RECOVERY_CHANGED, false);
     this.inputSystem.setEnabled(true);
     EventBus.emit(GameEvents.GAME_STARTED);
+    
+    // Start background music
+    this.audio.startBackgroundMusic();
   }
 
   /** Public restart entry for the React "Play Again" button (M3+). */
@@ -573,6 +580,9 @@ export class GameScene extends Phaser.Scene {
       this.physics.world.timeScale = 1;
       this.tweens.timeScale = 1;
       this.state = 'over';
+      
+      // Stop background music on game over
+      this.audio.stopBackgroundMusic();
       
       const finalScore = this.scoring.score;
       const finalCoins = this.scoring.coinCount;
