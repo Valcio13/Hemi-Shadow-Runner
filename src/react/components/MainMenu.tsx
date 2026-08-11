@@ -148,30 +148,32 @@ export function MainMenu({ highScore, onPlay }: MainMenuProps) {
         </div>
 
         {/* --- Wallet Connection --- */}
-        {wallet.available && (
-          <div className="menu-wallet">
-            {!connected ? (
-              <button 
-                className="btn btn-wallet btn-wallet-menu" 
-                onClick={handleConnect}
-                disabled={wallet.connecting}
-              >
-                {wallet.connecting ? 'Connecting…' : `Connect to ${DEFAULT_CHAIN.name}`}
-              </button>
-            ) : (
-              <div className="menu-wallet-connected">
-                <div className="web3-account">
-                  <span className="web3-dot" aria-hidden />
-                  {short(wallet.address!)}
-                  {!wallet.onHemi && <span className="web3-warn">wrong network</span>}
-                </div>
-                <div className="menu-wallet-hint">
-                  Your scores will be submitted on-chain
-                </div>
+        <div className="menu-wallet">
+          {!connected ? (
+            <button 
+              className="btn btn-wallet btn-wallet-menu" 
+              onClick={handleConnect}
+              disabled={wallet.connecting}
+            >
+              {wallet.connecting ? 'Connecting…' : (
+                wallet.available 
+                  ? `Connect to ${DEFAULT_CHAIN.name}` 
+                  : 'Connect Wallet'
+              )}
+            </button>
+          ) : (
+            <div className="menu-wallet-connected">
+              <div className="web3-account">
+                <span className="web3-dot" aria-hidden />
+                {short(wallet.address!)}
+                {!wallet.onHemi && <span className="web3-warn">wrong network</span>}
               </div>
-            )}
-          </div>
-        )}
+              <div className="menu-wallet-hint">
+                Your scores will be submitted on-chain
+              </div>
+            </div>
+          )}
+        </div>
 
         {wallet.error && <p className="web3-error menu-wallet-error">{wallet.error}</p>}
 
