@@ -22,6 +22,9 @@ body,
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow: hidden;
   user-select: none;
+  /* Fix for mobile browsers with address bars - fallback for older browsers */
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile (Chrome 108+, Safari 15.4+) */
 }
 
 .app-shell {
@@ -29,7 +32,9 @@ body,
   align-items: center;
   justify-content: center;
   height: 100vh;
+  height: 100dvh; /* Use dynamic viewport height for mobile */
   width: 100vw;
+  width: 100dvw; /* Use dynamic viewport width */
   background: radial-gradient(circle at 50% 30%, #16192400, #05060a 90%),
     var(--bg);
 }
@@ -37,8 +42,11 @@ body,
 /* The frame holds the canvas + all React overlays, sharing one coordinate box. */
 .game-frame {
   position: relative;
-  width: min(100vw, 177.78vh); /* maintain 16:9, fill available space */
+  width: min(100vw, 177.78vh);
+  width: min(100dvw, 177.78dvh); /* Use dynamic viewport units */
   max-width: 1440px;
+  max-height: 100vh;
+  max-height: 100dvh; /* Ensure it doesn't overflow on mobile */
   aspect-ratio: 16 / 9;
   box-shadow: 0 0 80px rgba(77, 225, 255, 0.14);
   border-radius: 12px;
@@ -2146,10 +2154,26 @@ body,
 
 /* ========== Mobile Responsive Adjustments ========== */
 @media (max-width: 768px) {
+  /* Fix for mobile browser address bars */
+  html,
+  body,
+  #root {
+    height: 100dvh;
+  }
+  
+  .app-shell {
+    height: 100dvh;
+  }
+  
+  .game-frame {
+    width: min(100dvw, 177.78dvh);
+    max-height: 100dvh;
+  }
+  
   /* Panels and modals */
   .panel {
     max-width: 95vw;
-    max-height: 90vh;
+    max-height: 85dvh; /* Use dynamic viewport height */
     overflow-y: auto;
     font-size: 0.9rem;
   }
