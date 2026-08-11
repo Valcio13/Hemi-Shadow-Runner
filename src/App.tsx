@@ -48,7 +48,7 @@ export default function App() {
         <TransactionStatus />
         <TouchControls 
           phase={phase} 
-          dashReady={dashMeter >= 100} 
+          dashReady={dashMeter >= 1} 
           currentPlane={plane}
         />
         <HUD
