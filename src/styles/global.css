@@ -2110,12 +2110,16 @@ body,
   color: rgba(255, 255, 255, 0.8);
   pointer-events: none;
   white-space: nowrap;
-  animation: hint-fade 3s ease-in-out infinite;
+  animation: hint-fade-out 5s ease-in-out forwards;
 }
 
-@keyframes hint-fade {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+@keyframes hint-fade-out {
+  0%, 70% { 
+    opacity: 0.8; 
+  }
+  100% { 
+    opacity: 0; 
+  }
 }
 
 /* Hide on desktop */
@@ -2200,10 +2204,69 @@ body,
   /* HUD adjustments */
   .hud {
     font-size: 0.85rem;
+    padding: 12px 16px;
   }
   
   .hud-score {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+  }
+  
+  .hud-top-left {
+    top: 10px;
+  }
+  
+  .hud-top-right {
+    top: 10px;
+  }
+  
+  /* Compact power-up badges for mobile */
+  .hud-powerups {
+    top: 54px;
+    gap: 6px;
+  }
+  
+  .pu-badge {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+  
+  .pu-icon {
+    font-size: 14px;
+  }
+  
+  .pu-label {
+    font-size: 10px;
+  }
+  
+  .pu-timer {
+    font-size: 14px;
+  }
+  
+  /* Plane indicator - more compact */
+  .hud-plane {
+    font-size: 11px;
+    padding: 4px 10px;
+    bottom: 52px;
+  }
+  
+  .hud-plane-dot {
+    width: 8px;
+    height: 8px;
+  }
+  
+  /* Dash meter */
+  .hud-dash {
+    bottom: 15px;
+    width: 180px;
+  }
+  
+  .hud-dash-label {
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+  
+  .hud-dash-bar {
+    height: 8px;
   }
   
   /* Leaderboard */

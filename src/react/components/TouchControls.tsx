@@ -17,6 +17,7 @@ interface TouchControlsProps {
 
 export function TouchControls({ phase, dashReady, currentPlane }: TouchControlsProps) {
   const [isMobile, setIsMobile] = useState(false);
+  const [showHint, setShowHint] = useState(true);
 
   useEffect(() => {
     // Detect if device is mobile
@@ -31,6 +32,18 @@ export function TouchControls({ phase, dashReady, currentPlane }: TouchControlsP
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Hide the jump hint after 5 seconds
+  useEffect(() => {
+    if (phase === 'playing') {
+      setShowHint(true);
+      const timer = setTimeout(() => {
+        setShowHint(false);
+      }, 5000); // Hide after 5 seconds
+      
+      return () => clearTimeout(timer);
+    }
+  }, [phase]);
 
   // Only show during gameplay on mobile devices
   if (phase !== 'playing' || !isMobile) {
@@ -81,10 +94,12 @@ export function TouchControls({ phase, dashReady, currentPlane }: TouchControlsP
         <div className="touch-btn-label">DASH</div>
       </button>
 
-      {/* Jump Info - Center */}
-      <div className="touch-jump-hint">
-        Tap screen to jump
-      </div>
+      {/* Jump Info - Center - Fades out after 5 seconds */}
+      {showHint && (
+        <div className="touch-jump-hint">
+          Tap screen to jump
+        </div>
+      )}
     </div>
   );
 }

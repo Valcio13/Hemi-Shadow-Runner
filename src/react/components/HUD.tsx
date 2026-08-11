@@ -35,12 +35,18 @@ export function HUD({
   const ready = dashMeter >= 1;
   const genesisActive = genesisMs > 0;
   const chronoActive = chronoMs > 0;
+  
+  // Detect mobile for conditional rendering
+  const isMobile = window.innerWidth < 768 || ('ontouchstart' in window);
 
   return (
     <div className="hud" aria-live="polite">
-      <div className="hud-title" aria-hidden>
-        HEMI <span className="hud-title-accent">SHADOW RUNNER</span>
-      </div>
+      {/* Hide title on mobile to save space */}
+      {!isMobile && (
+        <div className="hud-title" aria-hidden>
+          HEMI <span className="hud-title-accent">SHADOW RUNNER</span>
+        </div>
+      )}
       <div className="hud-top-left">
         <div className="hud-score">{score.toLocaleString()}</div>
         <div className="hud-highscore">BEST {highScore.toLocaleString()}</div>
@@ -77,15 +83,17 @@ export function HUD({
         )}
       </div>
 
+      {/* Plane indicator - hide keyboard hints on mobile */}
       <div className={`hud-plane hud-plane-${plane}`}>
         <span className="hud-plane-dot" aria-hidden />
         {plane === 'light' ? 'LIGHT' : 'SHADOW'}
-        <span className="hud-plane-hint">SHIFT / F to phase</span>
+        {!isMobile && <span className="hud-plane-hint">SHIFT / F to phase</span>}
       </div>
 
+      {/* Dash meter - hide keyboard hints on mobile */}
       <div className={`hud-dash ${ready ? 'is-ready' : ''}`}>
         <div className="hud-dash-label">
-          {ready ? 'DASH READY — PRESS E' : 'DASH'}
+          {ready ? (isMobile ? 'DASH READY' : 'DASH READY — PRESS E') : 'DASH'}
         </div>
         <div className="hud-dash-bar">
           <div
