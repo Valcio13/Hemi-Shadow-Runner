@@ -49,6 +49,10 @@ export function TouchControls({ phase, dashReady, currentPlane }: TouchControlsP
     if (dashReady) {
       requestDash();
     }
+    // Give haptic feedback even if not ready (optional)
+    if ('vibrate' in navigator && dashReady) {
+      navigator.vibrate(50);
+    }
   };
 
   return (
@@ -69,8 +73,9 @@ export function TouchControls({ phase, dashReady, currentPlane }: TouchControlsP
         className={`touch-btn touch-btn-dash ${dashReady ? 'ready' : 'disabled'}`}
         onTouchStart={handleDash}
         onMouseDown={handleDash}
-        disabled={!dashReady}
+        onClick={handleDash}
         aria-label="Dash"
+        type="button"
       >
         <div className="touch-btn-icon">💨</div>
         <div className="touch-btn-label">DASH</div>

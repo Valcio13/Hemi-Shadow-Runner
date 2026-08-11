@@ -2072,10 +2072,12 @@ body,
 .touch-btn-dash.disabled {
   opacity: 0.4;
   border-color: #666;
+  cursor: not-allowed;
 }
 
 .touch-btn-dash.disabled:active {
   transform: none;
+  background: rgba(0, 0, 0, 0.7);
 }
 
 @keyframes dash-pulse {
