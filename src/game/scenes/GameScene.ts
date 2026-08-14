@@ -37,7 +37,7 @@ type RunState = 'idle' | 'running' | 'dying' | 'over';
 
 export class GameScene extends Phaser.Scene {
   public player!: Player;
-  private inputSystem!: InputSystem;
+  public inputSystem!: InputSystem;
   private obstacles!: ObstacleManager;
   private coins!: CoinManager;
   private barriers!: BarrierManager;

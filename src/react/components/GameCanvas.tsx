@@ -44,13 +44,13 @@ export function GameCanvas() {
       return;
     }
 
-    // Forward the tap to Phaser's input system
-    // Phaser will handle the actual jump logic
+    // Get the actual Phaser Game Scene and trigger its input
     if (gameRef.current) {
-      const scene = gameRef.current.scene.keys.GameScene;
-      if (scene) {
-        // Trigger a synthetic pointer event on the Phaser scene
-        scene.input.emit('pointerdown', { isDown: true });
+      const scene = gameRef.current.scene.keys.GameScene as any;
+      if (scene && scene.inputSystem) {
+        // Call the input system's press handler directly
+        // This is safer than emitting synthetic events
+        scene.inputSystem.onPress();
       }
     }
   };
